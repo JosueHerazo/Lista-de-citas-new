@@ -30,7 +30,7 @@ class Date extends Model {
     @Column({
         type: DataType.DATE()
     })
-    declare date: string;
+    declare list: string;
     
     // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---
     @ForeignKey(() => Client)
