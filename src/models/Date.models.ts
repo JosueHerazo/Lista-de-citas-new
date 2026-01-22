@@ -4,7 +4,7 @@ import Client from './Clients.models';
 @Table({
     tableName: 'dates'
 })
-class Date extends Model {
+class Datelist extends Model {
     @Column({
         type: DataType.STRING(100),
         allowNull: false
@@ -46,4 +46,4 @@ class Date extends Model {
 
 // --- CORRECCIÓN AQUÍ ---
 
-export default Date;
+export default Datelist;
