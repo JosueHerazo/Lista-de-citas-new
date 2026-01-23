@@ -1,10 +1,10 @@
 import {Request, Response} from "express"
-import Date from "../models/Date.models"
+import Datelist from "../models/Date.models"
 
 export const getProducts = async (req: Request, res: Response) => {
 
     try {
-        const date = await Date.findAll({
+        const date = await Datelist.findAll({
             order: [
                 ["createdAt", "DESC"]
             ],
@@ -22,7 +22,7 @@ export const getProducts = async (req: Request, res: Response) => {
 export const createProduct = async  (req: Request, res: Response) =>{
     
     try {
-        const date = await Date.create(req.body)
+        const date = await Datelist.create(req.body)
         res.json({data: date})
         
     } catch (error) {   
@@ -35,7 +35,7 @@ export const createProduct = async  (req: Request, res: Response) =>{
 export const getProductById = async (req:Request, res: Response) => {
     try {
         const {id} = req.params
-        const date = await Date.findByPk(id)
+        const date = await Datelist.findByPk(id)
        
         if(!date) {
             return res.status(404).json({
@@ -59,7 +59,7 @@ export const UpdateProduct = async (req:Request, res:Response) => {
         // const id = req.params.id
         
         // luego se busca el peoducto por id
-        const date = await Date.findByPk(id)
+        const date = await Datelist.findByPk(id)
     //    super importante validar que haya producto
     if(!date) {
         return res.status(404).json({
@@ -90,7 +90,7 @@ export const updateAvailability = async  (req: Request, res: Response)=>
         // const id = req.params.id
         
         // luego se busca el peoducto por id
-        const date = await Date.findByPk(id)
+        const date = await Datelist.findByPk(id)
     //    super importante validar que haya producto
     if(!date) {
         return res.status(404).json({
@@ -122,7 +122,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
      try {
         const {id} = req.params
-        const date = await Date.findByPk(id)
+        const date = await Datelist.findByPk(id)
         
         if(!date) {
             return res.status(404).json({
