@@ -24,6 +24,9 @@ async function connectDB() {
 connectDB()
 //instancia de express
  const server = express()
+ server.get("/", (req, res) => {
+    res.send("Servidor funcionando en la raíz");
+})
 const whitelist = [
   process.env.FRONTEND_URL, 
   process.env.FRONTEND_URL_DATE,
