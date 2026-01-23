@@ -12,7 +12,7 @@ class Datelist extends Model {
     declare service: string;
 
     @Column({
-        type: DataType.FLOAT, // O DECIMAL(10,2) para dinero
+        type: DataType.FLOAT(10,2), // O DECIMAL(10,2) para dinero
         allowNull: false
     })
     declare price: number;
@@ -28,7 +28,7 @@ class Datelist extends Model {
     // Mantenemos estas columnas si las usas directamente en el form 
     // aunque lo ideal es que vengan de la relación con Client
     @Column({
-        type: DataType.DATE()
+        type: DataType.STRING()
     })
     declare date: string;
     
