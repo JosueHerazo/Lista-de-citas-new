@@ -12,8 +12,7 @@ class Datelist extends Model {
     declare service: string;
 
     @Column({
-        type: DataType.FLOAT(10,2), // O DECIMAL(10,2) para dinero
-        allowNull: false
+        type: DataType.INTEGER(), // O DECIMAL(10,2) para dinero
     })
     declare price: number;
 
