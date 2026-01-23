@@ -24,9 +24,7 @@ async function connectDB() {
 connectDB()
 //instancia de express
  const server = express()
- server.get("/", (req, res) => {
-    res.send("Servidor funcionando en la raíz");
-})
+
 const whitelist = [
   process.env.FRONTEND_URL, 
   process.env.FRONTEND_URL_DATE,
@@ -51,8 +49,7 @@ server.use(cors(corsOptions))
 server.use(express.json())
 
 server.use(morgan("dev"))
-server.get("/api/hola", (req, res) => res.json({ msg: "El servidor funciona" }));
- server.use("/api/service", router)
+ server.use("/api/date", router)
 
  export default server
 
