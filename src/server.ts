@@ -43,17 +43,12 @@ const corsOptions: CorsOptions = {
 };
 
 server.use(cors(corsOptions));
-// server.use(cors({
-//   origin: "http://localhost:5173"
-// }))
 
 server.use(cors(corsOptions))
-//Leer datos de formulario del  req.body
 server.use(express.json())
 
 server.use(morgan("dev"))
 
-// use es un metodo que usa express para interactuar sobre los los metodos http del router
  server.use("/api/service", router)
 
  export default server
