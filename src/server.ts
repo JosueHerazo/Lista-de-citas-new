@@ -48,7 +48,7 @@ server.use(cors(corsOptions))
 server.use(express.json())
 
 server.use(morgan("dev"))
-
+server.get("/api/hola", (req, res) => res.json({ msg: "El servidor funciona" }));
  server.use("/api/service", router)
 
  export default server
