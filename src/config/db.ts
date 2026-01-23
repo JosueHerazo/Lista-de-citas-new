@@ -4,12 +4,13 @@ import dotenv from "dotenv"
 // import Service from "../models/Date.models"
 import Date from "../models/Date.models"
 import Client from "../models/Clients.models"
+import Datelist from "../models/Date.models"
 dotenv.config()
  
 // console.log(process.env.DATABASE_URL);
 const db = new Sequelize(process.env.DATABASE_URL!, {
     // EL ERROR ESTABA AQUÍ: Los corchetes después de la coma estaban mal puestos
-    models: [Date, Client], 
+    models: [Datelist, Client], 
     logging: false,
     dialectOptions: {
         ssl: {
