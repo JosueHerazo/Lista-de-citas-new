@@ -2,7 +2,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize
 import Client from './Clients.models';
 
 @Table({
-    tableName: 'dates'
+    tableName: 'dateslist'
 })
 class Datelist extends Model {
     @Column({

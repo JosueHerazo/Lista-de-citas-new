@@ -5,8 +5,8 @@ import Datelist from "../models/Datelist.models"
 
 export const getProducts = async (req: Request, res: Response) => {
     try {
-        const dates = await Datelist.findAll()
-        res.json({ data: dates })
+        const dateslist = await Datelist.findAll()
+        res.json({ data: dateslist })
     } catch (error) {
         console.log(error)
     }
@@ -14,8 +14,8 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        const date = await Datelist.create(req.body)
-        res.status(201).json({ data: date })
+        const dateslist = await Datelist.create(req.body)
+        res.status(201).json({ data: dateslist })
     } catch (error) {
         console.log(error)
     }
