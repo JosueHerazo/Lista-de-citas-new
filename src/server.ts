@@ -30,7 +30,7 @@ const whitelist = [
   process.env.FRONTEND_URL,
   "https://ventas-latinosvip-frontend-nu.vercel.app" ,
  
-process.env.FRONTEND_URL_DATE,"https://citas-frontend-mauve.vercel.app"
+process.env.FRONTEND_URL_DATE,"https://citas-frontend-njc4.vercel.app"
 ]; 
 
 const corsOptions: CorsOptions = {
