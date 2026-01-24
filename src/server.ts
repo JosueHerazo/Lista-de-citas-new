@@ -25,27 +25,22 @@ connectDB()
 //instancia de express
  const server = express()
 
+
 const whitelist = [
-  process.env.FRONTEND_URL, 
-  process.env.FRONTEND_URL_DATE,
-  
-];
+  process.env.FRONTEND_URL,
+  "https://ventas-latinosvip-frontend-nu.vercel.app" ,
+ 
+process.env.FRONTEND_URL_DATE,"https://citas-frontend-mauve.vercel.app"
+]; 
 
 const corsOptions: CorsOptions = {
-  origin: function(origin, callback) {
-    // Si el origen está en la lista o no existe (como Postman)
-    if (!origin || whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log("Acceso denegado por CORS para:", origin);
-      callback(new Error("No permitido por CORS"));
-    }
+  origin: function (origin, callback) {
+    // Si quieres que funcione SÍ O SÍ ahora mismo:
+    callback(null, true); 
   }
 };
 
 server.use(cors(corsOptions));
-
-server.use(cors(corsOptions))
 server.use(express.json())
 
 server.use(morgan("dev"))
