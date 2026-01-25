@@ -4,6 +4,7 @@ import cors, {CorsOptions} from "cors"
 import morgan from "morgan"
 import router from "./router"
 import db from "./config/db"
+import routerDates from "./routerDates"
 
 
 // conectar a base de datos
@@ -25,7 +26,6 @@ connectDB()
 //instancia de express
  const server = express()
 
-
 const whitelist = [
   process.env.FRONTEND_URL,
   "https://ventas-latinosvip-frontend-nu.vercel.app" ,
@@ -40,12 +40,13 @@ const corsOptions: CorsOptions = {
   }
 };
 
-server.use(cors(corsOptions));
+
+server.use(cors(corsOptions))
 server.use(express.json())
 
 server.use(morgan("dev"))
- server.use("/api/date", router)
-//  server.use("/api/service", router)
+ server.use("/api/date", routerDates)
+ server.use("/api/service", router)
 
  export default server
 
