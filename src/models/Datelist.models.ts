@@ -3,7 +3,7 @@ import Client from './Clients.models';
 // import Client from './Clients.models';
 
 @Table({
-    tableName: 'dateslist'
+    tableName: 'dates'
 })
 class Datelist extends Model {
     @Column({
