@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType, } from 'sequelize-typescript';
+import { Table, Column, Model,ForeignKey, BelongsTo, DataType, } from 'sequelize-typescript';
+import Client from './Clients.models';
 // import Client from './Clients.models';
 
 @Table({
@@ -36,23 +37,17 @@ class Datelist extends Model {
         type: DataType.BIGINT()
     })
     declare phone: number;
-}
-
-
-export default Datelist;
-
-// -----------------------
-    // Mantenemos estas columnas si las usas directamente en el form 
-    // aunque lo ideal es que vengan de la relación con Client
-// // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---
-// @ForeignKey(() => Client)
-// @Column({
-    //     type: DataType.INTEGER()
-    // })
-// declare clientId: number;
-
-// @BelongsTo(() => Client)
-// declare client: Client;
     
-
-// --- CORRECCIÓN AQUÍ ---
+    @ForeignKey(() => Client)
+    @Column({
+        type: DataType.INTEGER()
+    })
+    declare clientId: number;
+    
+    @BelongsTo(() => Client)
+    declare clientUsuario: Client;
+    
+    
+    // --- CORRECCIÓN AQUÍ ---
+}
+    export default Datelist;
