@@ -25,7 +25,6 @@ class Datelist extends Model {
     
     @Column({
         type: DataType.STRING(100),
-        field: 'dateList'
     })
     declare dateList: string;
 
