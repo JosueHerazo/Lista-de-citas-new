@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import Client from './Clients.models';
+// import Client from './Clients.models';
 
 @Table({
     tableName: 'dateslist'
@@ -27,7 +27,7 @@ class Datelist extends Model {
     // Mantenemos estas columnas si las usas directamente en el form 
     // aunque lo ideal es que vengan de la relación con Client
     @Column({
-        type: DataType.STRING()
+        type: DataType.DATE()
     })
     declare dateList: string;
 
