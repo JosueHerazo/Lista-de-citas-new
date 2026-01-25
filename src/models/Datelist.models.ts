@@ -22,31 +22,33 @@ class Datelist extends Model {
     })
     declare barber: string;
     
-    // -----------------------
-    
-    // Mantenemos estas columnas si las usas directamente en el form 
-    // aunque lo ideal es que vengan de la relación con Client
     @Column({
         type: DataType.DATE()
     })
-    declare dateList: string;
+    declare dateList: Date;
 
     @Column({
-        type: DataType.STRING()
+        type: DataType.STRING(100)
     })
     declare client: string;
 
     @Column({
-        type: DataType.NUMBER()
+        type: DataType.BIGINT()
     })
     declare phone: number;
 }
 
+
+export default Datelist;
+
+// -----------------------
+    // Mantenemos estas columnas si las usas directamente en el form 
+    // aunque lo ideal es que vengan de la relación con Client
 // // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---
 // @ForeignKey(() => Client)
 // @Column({
-//     type: DataType.INTEGER()
-// })
+    //     type: DataType.INTEGER()
+    // })
 // declare clientId: number;
 
 // @BelongsTo(() => Client)
@@ -54,5 +56,3 @@ class Datelist extends Model {
     
 
 // --- CORRECCIÓN AQUÍ ---
-
-export default Datelist;
