@@ -30,6 +30,16 @@ class Datelist extends Model {
         type: DataType.STRING()
     })
     declare dateList: string;
+
+    @Column({
+        type: DataType.STRING()
+    })
+    declare client: string;
+
+    @Column({
+        type: DataType.NUMBER()
+    })
+    declare phone: number;
 }
 
 // // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---

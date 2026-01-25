@@ -19,7 +19,8 @@ router.post("/",
      handlerInputErrors,
      body("barber").notEmpty().withMessage("El nombre del barbero no puede ir vacio"),
      body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
-    
+     body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
+     body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
     createProduct
 )
 router.get("/:id",
