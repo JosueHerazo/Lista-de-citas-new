@@ -24,12 +24,15 @@ class Datelist extends Model {
     declare barber: string;
     
     @Column({
-        type: DataType.DATE()
+        type: DataType.STRING(100),
+        field: 'dateList'
     })
-    declare dateList: Date;
+    declare dateList: string;
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100),
+        allowNull: true
+        // Ponlo en true temporalmente para que no falle al sincronizar
     })
     declare client: string;
 
