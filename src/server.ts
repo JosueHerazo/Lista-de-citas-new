@@ -45,7 +45,7 @@ server.use(express.json())
 
 server.use(morgan("dev"))
  server.use("/api/date", router)
- server.use("/api/service", router)
+//  server.use("/api/service", router)
 
  export default server
 
