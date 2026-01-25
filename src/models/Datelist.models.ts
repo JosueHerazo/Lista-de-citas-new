@@ -34,7 +34,7 @@ class Datelist extends Model {
     // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---
     @ForeignKey(() => Client)
     @Column({
-        type: DataType.INTEGER
+        type: DataType.INTEGER()
     })
     declare clientId: number;
     
