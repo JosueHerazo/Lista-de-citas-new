@@ -1,13 +1,12 @@
 import { Model } from 'sequelize-typescript';
 import Client from './Clients.models';
-declare class Datelist extends Model {
+declare class Service extends Model {
     service: string;
     price: number;
     barber: string;
-    dateList: bigint;
     client: string;
     phone: number;
     clientId: number;
-    clientUsuario: Client;
+    clientData: Client;
 }
-export default Datelist;
+export default Service;

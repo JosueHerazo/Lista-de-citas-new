@@ -37,7 +37,7 @@ class Datelist extends Model {
     declare client: string;
 
     @Column({
-        type: DataType.BIGINT()
+        type: DataType.DATE()
     })
     declare phone: number;
     

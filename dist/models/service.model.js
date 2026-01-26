@@ -14,8 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Clients_models_1 = __importDefault(require("./Clients.models"));
-// import Client from './Clients.models';
-let Datelist = class Datelist extends sequelize_typescript_1.Model {
+let Service = class Service extends sequelize_typescript_1.Model {
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -23,56 +22,50 @@ __decorate([
         allowNull: false
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "service", void 0);
+], Service.prototype, "service", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.FLOAT(), // O DECIMAL(10,2) para dinero
+        allowNull: false
     }),
     __metadata("design:type", Number)
-], Datelist.prototype, "price", void 0);
+], Service.prototype, "price", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(50),
         allowNull: false
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "barber", void 0);
+], Service.prototype, "barber", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.BIGINT(),
-        allowNull: false
-    }),
-    __metadata("design:type", BigInt)
-], Datelist.prototype, "dateList", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(100),
-        allowNull: true
-        // Ponlo en true temporalmente para que no falle al sincronizar
+        type: sequelize_typescript_1.DataType.STRING(100)
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "client", void 0);
+], Service.prototype, "client", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.BIGINT()
+        type: sequelize_typescript_1.DataType.BIGINT() // Use BIGINT because phone numbers exceed standard INTEGER limits
     }),
     __metadata("design:type", Number)
-], Datelist.prototype, "phone", void 0);
+], Service.prototype, "phone", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Clients_models_1.default),
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.INTEGER()
+        type: sequelize_typescript_1.DataType.INTEGER(),
+        allowNull: true // Permite servicios sin cliente si fuera necesario
     }),
     __metadata("design:type", Number)
-], Datelist.prototype, "clientId", void 0);
+], Service.prototype, "clientId", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => Clients_models_1.default),
     __metadata("design:type", Clients_models_1.default)
-], Datelist.prototype, "clientUsuario", void 0);
-Datelist = __decorate([
+], Service.prototype, "clientData", void 0);
+Service = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: 'dates'
+        tableName: 'services'
     })
-], Datelist);
-exports.default = Datelist;
-//# sourceMappingURL=Datelist.models.js.map
+], Service);
+// --- CORRECCIÓN AQUÍ ---
+exports.default = Service;
+//# sourceMappingURL=service.model.js.map
