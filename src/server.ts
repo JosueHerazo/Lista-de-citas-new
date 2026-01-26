@@ -22,7 +22,7 @@ const server = express()
 const whitelist = [
     process.env.FRONTEND_URL,      // Render ya tiene el valor de Vercel
     process.env.FRONTEND_URL_DATE, // La URL de citas que me mostraste
-    "https://citas-frontend-njc4.vercel.app",
+,
     undefined
 ];
 
