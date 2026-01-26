@@ -20,10 +20,10 @@ const server = express()
 
 // Configuración de CORS Robusta
 const whitelist = [
-    process.env.FRONTEND_URL, // Asegúrate que en Render esto sea https://ventas-latinosvip-frontend-nu.vercel.app
-    process.env.FRONTEND_URL_DATE, // Asegúrate que en Render esto sea https://ventas-latinosvip-frontend-nu.vercel.app
-    
-    undefined // Permite herramientas de testing
+    process.env.FRONTEND_URL,      // Render ya tiene el valor de Vercel
+    process.env.FRONTEND_URL_DATE, // La URL de citas que me mostraste
+    "https://citas-frontend-njc4.vercel.app",
+    undefined
 ];
 
 const corsOptions: CorsOptions = {
