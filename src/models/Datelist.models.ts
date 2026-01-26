@@ -24,10 +24,10 @@ class Datelist extends Model {
     declare barber: string;
     
     @Column({
-        type: DataType.DATE(),
+        type: DataType.BIGINT(),
         allowNull: false
     })
-    declare dateList: Date;
+    declare dateList: bigint;
 
     @Column({
         type: DataType.STRING(100),
