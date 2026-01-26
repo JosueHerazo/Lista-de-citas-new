@@ -24,7 +24,7 @@ class Datelist extends Model {
     declare barber: string;
     
     @Column({
-        type: DataType.DATE(),
+        type: DataType.STRING(),
         allowNull: false
     })
     declare dateList: string;
