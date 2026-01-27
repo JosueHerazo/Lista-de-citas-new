@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { body, param} from "express-validator"
-import { createProduct, deleteProduct, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
+import { createProduct, deleteProduct, getOccupiedSlots, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
@@ -10,7 +10,9 @@ const router = Router()
 router.get("/",
     getProducts
 )
-
+router.get("/availability",
+    getOccupiedSlots
+)
 router.post("/",
     //validacion
      body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),

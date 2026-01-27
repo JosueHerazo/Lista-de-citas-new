@@ -25,7 +25,7 @@ class Datelist extends Model {
     
     @Column({
         type: DataType.STRING(),
-        allowNull: false
+        allowNull: true
     })
     declare dateList: string;
 
@@ -40,6 +40,12 @@ class Datelist extends Model {
         type: DataType.BIGINT()
     })
     declare phone: number;
+    @Column({
+        type: DataType.INTEGER, // Guardaremos minutos (30, 60, etc)
+        allowNull: false,
+        defaultValue: 30
+    })
+    declare duration: number;
     
     @ForeignKey(() => Client)
     @Column({
