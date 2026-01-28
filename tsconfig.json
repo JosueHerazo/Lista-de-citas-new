@@ -6,6 +6,10 @@
        "lib": ["esnext"],
        "target": "ESNext",
        "moduleResolution": "nodenext",
+       "baseUrl": "./",
+       "paths": {
+      "*": ["node_modules/*", "src/*"]
+    },
        "module": "nodenext",
        "strict": false,
        "sourceMap": true,

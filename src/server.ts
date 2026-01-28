@@ -1,9 +1,9 @@
 import express from "express"
 import cors, { CorsOptions } from "cors"
 import morgan from "morgan"
-import router from "./router"
+import router from "./routes/router"
 import db from "./config/db"
-import routerDates from "./routerDates"
+import routerDates from "./routes/routerDates"
 
 async function connectDB() {
     try {
@@ -41,5 +41,6 @@ server.use(morgan("dev"))
 
 server.use("/api/service", router)
 server.use("/api/date", routerDates)
+server.use("/api/news", router)
 
 export default server
