@@ -1,28 +1,29 @@
-// models/News.js
-import { DataTypes } from 'sequelize';
-import db from '../config/db.js';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { Comment } from './Comment.model';
 
-const News = db.define('news', {
-    description: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    url: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    type: {
-        type: DataTypes.ENUM('image', 'video'),
-        defaultValue: 'image'
-    },
-    likes: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-    },
-    clientName: { // Para saber quién lo publicó
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-});
+@Table({ tableName: 'news' })
+export class News extends Model {
+    @Column({ type: DataType.TEXT, allowNull: false })
+    description!: string;
 
-export default News;
+    @Column({ type: DataType.STRING, allowNull: false })
+    url!: string;
+
+    @Column({ 
+        type: DataType.ENUM('image', 'video'), 
+        defaultValue: 'image' 
+    })
+    type!: string;
+
+    @Column({ type: DataType.INTEGER, defaultValue: 0 })
+    likes!: number;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    clientName!: string;
+
+    // Relación: Una noticia tiene muchos comentarios 💬
+    @HasMany(() => Comment)
+    comments!: Comment[];
+}
+
+export default News; // <--- ¡Esto es lo que pide el error!

@@ -9,14 +9,17 @@
        "baseUrl": "./",
        "paths": {
       "*": ["node_modules/*", "src/*"]
-    },
+        },
        "module": "nodenext",
        "strict": false,
        "sourceMap": true,
        "esModuleInterop": true,
        "declaration": true,
        "experimentalDecorators": true,
-       "emitDecoratorMetadata": true
+       "emitDecoratorMetadata": true,
+       "allowJs": true,
+        
+
     },
     "include": ["src/**/*.ts"] 
 }

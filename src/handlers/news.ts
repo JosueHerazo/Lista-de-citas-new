@@ -1,9 +1,9 @@
-import News from '../models/New.model.js';
-// backend/src/controllers/NewsController.ts
-import { Request, Response } from 'express';
 
-
-export const createNews = async (req: any, res: Response) => { // Cambiado Request por any para aceptar req.file
+import { Request, Response} from 'express';
+import {Comment} from '../models/Comment.model';
+import {News} from '../models/New.model';
+import  Like  from '../models/Likes.model';
+    export const createNews = async (req: Request, res: Response) => { // Cambiado Request por any para aceptar req.file
     try {
         if (!req.file) {
             return res.status(400).json({ error: "No se seleccionó ningún archivo" });
@@ -32,7 +32,7 @@ export const getNews = async (_req: Request, res: Response) => {
         res.status(500).json({ error: "Error al obtener posts" });
     }
 };
-export const createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response ) => {
     try {
         // req.file viene de multer tras subir a la nube
         const { description, type } = req.body;
@@ -50,8 +50,49 @@ export const createPost = async (req, res) => {
     }
 };
 
-export const getPosts = async (req, res) => {
+export const getPosts = async (req: Request, res: Response ) => {
     const posts = await News.findAll({ order: [['createdAt', 'DESC']] });
     res.json({ data: posts });
 };
 
+
+export const addComment = async (req : Request, res: Response) => {
+    try {
+        const { newsId } = req.params;
+        const { text, userName } = req.body;
+
+        const newComment = await Comment.create({
+            text,
+            userName,
+            newsId // Sequelize asocia esto automáticamente
+        });
+
+        res.status(201).json(newComment);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al comentar' });
+    }
+};
+
+
+export const toggleLike = async (req: Request, res: Response) => {
+    try {
+        const { newsId } = req.params;
+        const { userId } = req.body;
+
+        // 1. Buscamos si el like ya existe
+        const existingLike = await Like.findOne({ 
+            where: { newsId, userId } 
+        });
+
+        if (existingLike) {
+            // Si ya existe, el usuario quiere "quitar" su like
+            // ¿Qué método de Sequelize crees que deberíamos usar para borrar 'existingLike'?
+        } else {
+            // Si no existe, creamos uno nuevo
+            await Like.create({ newsId, userId });
+            res.json({ message: "Like añadido" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Error en la acción de like" });
+    }
+};
