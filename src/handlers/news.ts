@@ -1,9 +1,24 @@
 
 import { Request, Response} from 'express';
-import {Comment} from '../models/Comment.model';
-import {News} from '../models/New.model';
+import Comment from '../models/Comment.model';
+import News from '../models/New.model';
 import  Like  from '../models/Likes.model';
-    export const createNews = async (req: Request, res: Response) => { // Cambiado Request por any para aceptar req.file
+
+
+export const getNews = async (_req: Request, res: Response) => {
+    try {
+        const posts = await News.findAll({ 
+        order: [['createdAt', 'DESC']], 
+        include: [Comment, Like] });
+        // res.json({ data: posts });
+        res.json({ success: true, data: posts });
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener posts" });
+        res.status(500).json({ success: false, error: 'Error al obtener noticias' });
+    }
+};
+  
+export const createNews = async (req: Request, res: Response) => { // Cambiado Request por any para aceptar req.file
     try {
         if (!req.file) {
             return res.status(400).json({ error: "No se seleccionó ningún archivo" });
@@ -14,22 +29,14 @@ import  Like  from '../models/Likes.model';
         const news = await News.create({
             description,
             url: req.file.path, 
-            type: type || 'image',
+            type: req.file.mimetype.startsWith('video') ? 'video' : 'image',
             user: barberId || 'Anónimo'
         });
 
-        res.status(201).json({ data: news });
+        res.status(201).json({ success: true, data: news });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error interno al publicar" });
-    }
-};
-export const getNews = async (_req: Request, res: Response) => {
-    try {
-        const posts = await News.findAll({ order: [['createdAt', 'DESC']] });
-        res.json({ data: posts });
-    } catch (error) {
-        res.status(500).json({ error: "Error al obtener posts" });
+        res.status(500).json({ success: false, error: "Error interno al publicar" });
     }
 };
 export const createPost = async (req: Request, res: Response ) => {
@@ -66,8 +73,7 @@ export const addComment = async (req : Request, res: Response) => {
             userName,
             newsId // Sequelize asocia esto automáticamente
         });
-
-        res.status(201).json(newComment);
+        res.status(201).json({ success: true, data: newComment });
     } catch (error) {
         res.status(500).json({ error: 'Error al comentar' });
     }
@@ -86,7 +92,8 @@ export const toggleLike = async (req: Request, res: Response) => {
 
         if (existingLike) {
             // Si ya existe, el usuario quiere "quitar" su like
-            // ¿Qué método de Sequelize crees que deberíamos usar para borrar 'existingLike'?
+            await existingLike.destroy(); // Usamos destroy() para eliminar el like existente
+            res.json({ success: true, message: "Like eliminado" });
         } else {
             // Si no existe, creamos uno nuevo
             await Like.create({ newsId, userId });

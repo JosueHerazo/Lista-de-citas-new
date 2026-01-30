@@ -7,8 +7,6 @@ import { addComment, createNews, getNews, toggleLike } from './handlers/news.js'
 const router = Router();
 
 router.post('/', upload.single('file'), createNews);
-router.get('/', getNews);
-router.post('/', createNews);
 router.get('/', getNews); 
 router.post('/:newsId/comments', addComment);
 router.post('/:newsId/like', toggleLike);  

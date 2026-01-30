@@ -1,10 +1,10 @@
-import express from "/express"
-import cors, { CorsOptions } from "/cors"
-import morgan from "/morgan"
-import router from "/router"
+import express from "express"
+import cors, { CorsOptions } from "cors"
+import morgan from "morgan"
+import router from "./router"
 import db from "./config/db"
 import routerDates from "./routerDates"
-import routerNews from "routerNews"
+import routerNews from "./routerNews"
 
 async function connectDB() {
     try {
