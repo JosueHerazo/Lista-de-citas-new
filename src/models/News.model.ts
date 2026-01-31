@@ -3,7 +3,7 @@ import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import Comment from './Comment.model';
 import { Like } from './Likes.model';
 
-@Table({ tableName: 'news' })
+@Table({ tableName: 'News' })
 export class News extends Model {
   @Column({ type: DataType.TEXT, allowNull: false })
   description!: string;

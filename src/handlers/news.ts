@@ -1,7 +1,7 @@
 
 import { Request, Response} from 'express';
 import Comment from '../models/Comment.model';
-import News from '../models/New.model';
+import News from '../models/News.model';
 import  Like  from '../models/Likes.model';
 
 export const getNews = async (_req: Request, res: Response) => {

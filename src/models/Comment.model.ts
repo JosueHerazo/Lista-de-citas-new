@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
-import News from "./New.model"; // Importamos el default
+import News from "./News.model"; // Importamos el default
 
 @Table({ tableName: "comments" })
 export class Comment extends Model {
