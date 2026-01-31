@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { body, param} from "express-validator"
 import { createProduct, deleteProduct, getOccupiedSlots, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
-import { handlerInputErrors } from "middleware"
+import { handlerInputErrors } from "./middleware"
 
 const router = Router()
 
@@ -46,7 +46,11 @@ router.delete("/:id",
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors, 
     deleteProduct
+    
 )
+// routerDates.ts
+router.get("/availability", getOccupiedSlots); // <--- Mueve esto arriba de /:id
+router.get("/:id", getProductById);
 
 
 

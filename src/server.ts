@@ -22,8 +22,7 @@ const server = express()
 // Configuración de CORS Robusta
 const whitelist = [
     process.env.FRONTEND_URL,   
-    process.env.FRONTEND_URL_DATE, 
-    undefined
+    process.env.FRONTEND_URL_DATE
 ];
 
 const corsOptions: CorsOptions = {
@@ -35,8 +34,13 @@ const corsOptions: CorsOptions = {
         }
     }
 }
+server.use(cors({
+    origin: '*', // Permite todos los orígenes para descartar problemas de configuración
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-server.use(cors(corsOptions))
+// server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
 

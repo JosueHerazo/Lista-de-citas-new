@@ -18,6 +18,7 @@ const db = new Sequelize(process.env.DATABASE_URL!, {
         }
     }
 });
+console.log("Cloudinary Key:", process.env.CLOUDINARY_API_KEY);
 
 
 

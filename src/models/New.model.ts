@@ -1,6 +1,7 @@
 // models/New.model.ts  (o News.model.ts – elige uno y manténlo)
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import Comment from './Comment.model';
+import { Like } from './Likes.model';
 
 @Table({ tableName: 'news' })
 export class News extends Model {
@@ -21,6 +22,9 @@ export class News extends Model {
 
   @HasMany(() => Comment)
   comments!: Comment[];
+  
+  @HasMany(() => Like)
+    likes_list!: Like[];
 }
 
 export default News;
