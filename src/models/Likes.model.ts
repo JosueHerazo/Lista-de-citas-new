@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import News from './News.model';
+import News from './New.model';
 
 @Table({
     tableName: 'likes',
