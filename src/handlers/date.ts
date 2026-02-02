@@ -22,7 +22,7 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 }
 
-export const getDatesList = async (req: Request, res: Response) => {
+export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
         const { barber } = req.params;  

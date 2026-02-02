@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { body, param} from "express-validator"
-import { createProduct, deleteProduct, getDatesList, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
+import { createProduct, deleteProduct, getBarberAvailability, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
@@ -23,10 +23,10 @@ router.post("/",
      body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
     createProduct
 )
-router.get("/availability/:barber",
+router.get("/availability/:barberName",
     param("barber").notEmpty().withMessage("Nombre de barbero requerido"),
     handlerInputErrors,
-    getDatesList
+    getBarberAvailability
 )
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
