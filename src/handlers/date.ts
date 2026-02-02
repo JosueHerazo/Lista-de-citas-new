@@ -14,6 +14,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
         const dateslist = await Datelist.create(req.body)
         res.status(201).json({ data: dateslist })
     } catch (error) {
@@ -21,27 +22,34 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 }
 
+export const getDatesList = async (req: Request, res: Response) => {
+    try {
+        // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
+        const { barber } = req.params;  
+        // Buscamos todas las citas de ese barbero
+        const appointment = await Datelist.findAll({
+            where: { barber },
+            attributes: ['dateList'] // Solo nos interesa la fecha
+        });   
+        // Respondemos con el array de fechas
+        res.json({ data: appointment })
+           if (!barber) {
+            return res.status(400).json({ error: "Debe especificar un barbero" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Error en el servidor" });
+    }
+}; 
+export const createAppointment= async (req: Request, res: Response) => {
+    try {
+        const appointment = await Datelist.create(req.body);
+        res.status(201).json({ data: appointment });
+    } catch (error) {
+        res.status(400).json({ error: "Error al crear la cita" });
+    }
+}
 // Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
 export const deleteProduct = async (req: Request, res: Response) => {}
 export const getProductById = async (req: Request, res: Response) => {}
 export const updateAvailability = async (req: Request, res: Response) => {}
 export const UpdateProduct = async (req: Request, res: Response) => {}
-
-export const getOccupiedSlots = async (req: Request, res: Response) => {
-    try {
-        const { barber } = req.params;     
-           if (!barber) {
-            return res.status(400).json({ error: "Debe especificar un barbero" });
-        }
-
-        const appointments = await Datelist.findAll({
-            where: { barber: barber },
-            attributes: ['dateList'] 
-        });
-
-        // Enviamos un array simple de strings/fechas: ["2026-02-01T10:00...", ...]
-       res.json({ data: appointments });
-    } catch (error) {
-        res.status(500).json({ error: "Error en el servidor" });
-    }
-};

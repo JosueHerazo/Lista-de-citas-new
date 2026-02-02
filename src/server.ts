@@ -1,7 +1,7 @@
 import express from "express"
 import  { CorsOptions } from "cors"
 import morgan from "morgan"
-import router from "./router"
+import router from "./routerDates"
 import db from "./config/db"
 import routerDates from "./routerDates"
 import routerNews from "./routerNews"

@@ -1,16 +1,16 @@
 import { Router } from "express"
 import { body, param} from "express-validator"
-import { createProduct, deleteProduct, getOccupiedSlots, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
+import { createProduct, deleteProduct, getDatesList, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
 
 //  Routing
-
+// Obtener todas las citas (para el admin)
 router.get("/",
     getProducts
 )
-router.get("/availability/:barber", getOccupiedSlots)
+// Crear una cita nueva
 router.post("/",
     //validacion
      body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
@@ -22,6 +22,11 @@ router.post("/",
      body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
      body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
     createProduct
+)
+router.get("/availability/:barber",
+    param("barber").notEmpty().withMessage("Nombre de barbero requerido"),
+    handlerInputErrors,
+    getDatesList
 )
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
@@ -47,7 +52,6 @@ router.delete("/:id",
     
 )
 // routerDates.ts
-router.get("/availability", getOccupiedSlots); // <--- Mueve esto arriba de /:id
 router.get("/:id", getProductById);
 
 
