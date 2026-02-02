@@ -40,7 +40,7 @@ export const getOccupiedSlots = async (req: Request, res: Response) => {
         });
 
         // Enviamos un array simple de strings/fechas: ["2026-02-01T10:00...", ...]
-        res.json({ data: appointments.map(a => a.getDataValue('dateList')) });
+       res.json({ data: appointments });
     } catch (error) {
         res.status(500).json({ error: "Error en el servidor" });
     }
