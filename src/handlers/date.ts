@@ -29,8 +29,8 @@ export const UpdateProduct = async (req: Request, res: Response) => {}
 
 export const getOccupiedSlots = async (req: Request, res: Response) => {
     try {
-        const { barber } = req.query; // Viene de la URL ?barber=Josue
-        if (!barber) {
+        const { barber } = req.params;     
+           if (!barber) {
             return res.status(400).json({ error: "Debe especificar un barbero" });
         }
 

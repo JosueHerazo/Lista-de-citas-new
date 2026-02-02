@@ -10,9 +10,7 @@ const router = Router()
 router.get("/",
     getProducts
 )
-router.get("/availability/",
-    getOccupiedSlots
-)
+router.get("/availability/:barber", getOccupiedSlots)
 router.post("/",
     //validacion
      body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),

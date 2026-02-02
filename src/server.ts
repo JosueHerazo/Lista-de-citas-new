@@ -1,5 +1,5 @@
 import express from "express"
-import cors, { CorsOptions } from "cors"
+import  { CorsOptions } from "cors"
 import morgan from "morgan"
 import router from "./router"
 import db from "./config/db"
@@ -34,13 +34,7 @@ const corsOptions: CorsOptions = {
         }
     }
 }
-// server.use(cors({
-//     origin: '*', // Permite todos los orígenes para descartar problemas de configuración
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
 
-// server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
 
