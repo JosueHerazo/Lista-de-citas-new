@@ -10,7 +10,7 @@ const router = Router()
 router.get("/",
     getProducts
 )
-router.get("/availability/:barber",
+router.get("/availability/",
     getOccupiedSlots
 )
 router.post("/",

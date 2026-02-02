@@ -29,22 +29,19 @@ export const UpdateProduct = async (req: Request, res: Response) => {}
 
 export const getOccupiedSlots = async (req: Request, res: Response) => {
     try {
-        const { barber } = req.query;
+        const { barber } = req.query; // Viene de la URL ?barber=Josue
         if (!barber) {
             return res.status(400).json({ error: "Debe especificar un barbero" });
         }
 
-        // Buscamos solo las citas de hoy en adelante para ese barbero
         const appointments = await Datelist.findAll({
-            where: {
-                barber: barber,
-                // Opcional: filtrar solo fechas futuras
-            },
-            attributes: ['dateList'] // Solo necesitamos la fecha/hora
+            where: { barber: barber },
+            attributes: ['dateList'] 
         });
 
-        res.json({ data: appointments.map(a => a.dateList) });
+        // Enviamos un array simple de strings/fechas: ["2026-02-01T10:00...", ...]
+        res.json({ data: appointments.map(a => a.getDataValue('dateList')) });
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener disponibilidad" });
+        res.status(500).json({ error: "Error en el servidor" });
     }
 };
