@@ -27,18 +27,24 @@ export const getProductById = async (req: Request, res: Response) => {}
 export const updateAvailability = async (req: Request, res: Response) => {}
 export const UpdateProduct = async (req: Request, res: Response) => {}
 
-// En tu controlador de fechas (Backend)
 export const getOccupiedSlots = async (req: Request, res: Response) => {
     try {
-        const { barber } = req.query; // Recibimos el nombre del barbero
-        
-        const dates = await Datelist.findAll({
-            where: { barber },
-            attributes: ['dateList', 'duration', 'service'] // Solo lo necesario
+        const { barber } = req.query;
+        if (!barber) {
+            return res.status(400).json({ error: "Debe especificar un barbero" });
+        }
+
+        // Buscamos solo las citas de hoy en adelante para ese barbero
+        const appointments = await Datelist.findAll({
+            where: {
+                barber: barber,
+                // Opcional: filtrar solo fechas futuras
+            },
+            attributes: ['dateList'] // Solo necesitamos la fecha/hora
         });
-        
-        res.json({ data: dates });
+
+        res.json({ data: appointments.map(a => a.dateList) });
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener horarios' });
+        res.status(500).json({ error: "Error al obtener disponibilidad" });
     }
-}
+};
