@@ -24,7 +24,7 @@ router.post("/",
     createProduct
 )
 router.get("/availability/:barberName",
-    param("barber").notEmpty().withMessage("Nombre de barbero requerido"),
+    param("barberName").notEmpty().withMessage("Nombre de barbero requerido"),
     handlerInputErrors,
     getBarberAvailability
 )
