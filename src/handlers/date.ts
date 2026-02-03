@@ -24,18 +24,13 @@ export const createProduct = async (req: Request, res: Response) => {
 }
 
 export const getBarberAvailability = async (req: Request, res: Response) => {
-    const { barberName } = req.params;  
-    console.log(`[GET /availability] Barbero solicitado: "${barberName}"`);
-    // Buscamos todas las citas de ese barbero
-    if (!barberName) {
-     return res.status(400).json({ error: "Debe especificar un barbero" });
-    }
+    
     try {
+        const { barber} = req.params;  
+        console.log(`[GET /availability] Barbero solicitado: "${barber}"`);
         // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
         const appointment = await Datelist.findAll({
-            where: { barberName },
-            attributes: ['dateList'] // Solo nos interesa la fecha
-        });   
+            where: { barber }        });   
         // Respondemos con el array de fechas
         res.json({ data: appointment })
     } catch (error) {
