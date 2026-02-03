@@ -27,12 +27,14 @@ export const getBarberAvailability = async (req: Request, res: Response) => {
     
     try {
         const { barber} = req.params;  
-        console.log(`[GET /availability] Barbero solicitado: "${barber}"`);
-        // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
+console.log(`[BACKEND] Buscando citas para: ${barber}`);        // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
         const appointment = await Datelist.findAll({
-            where: { barber }        });   
+            where: { barber },     
+            attributes: ['dateList']
+        });   
+        const busySlots = appointment.map(app => app.dateList);
         // Respondemos con el array de fechas
-        res.json({ data: appointment })
+        res.json({ data: busySlots })
     } catch (error) {
         res.status(500).json({ error: "Error en el servidor" });
     }

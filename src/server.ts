@@ -38,8 +38,6 @@ const corsOptions: CorsOptions = {
 server.use(express.json())
 server.use(morgan("dev"))
 
-server.use("/api/service", router)
 server.use("/api/date", routerDates)
-server.use("/api/availability", routerDates)
 server.use("/api/news", routerNews)
 export default server

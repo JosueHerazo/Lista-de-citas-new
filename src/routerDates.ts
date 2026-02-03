@@ -7,6 +7,10 @@ const router = Router()
 
 //  Routing
 // Obtener todas las citas (para el admin)
+router.get("/availability/:barber",
+param("barber").trim().notEmpty().withMessage("Nombre de barbero requerido"),
+handlerInputErrors,
+getBarberAvailability)
 router.get("/",
     getProducts
 )
@@ -20,13 +24,11 @@ router.post("/",
      body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
      body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
      body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
-    createProduct
-)
-router.get("/:barber",
-    param("barber").trim().notEmpty().withMessage("Nombre de barbero requerido"),
-    handlerInputErrors,
-    getBarberAvailability
-)
+     body("dura").notEmpty().withMessage("El telefono no puede ir vacio"),
+     createProduct
+
+    )
+    
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
