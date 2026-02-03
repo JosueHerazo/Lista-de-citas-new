@@ -14,7 +14,8 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
+        console.log("Body recibido en POST /api/date:", req.body);
+  console.log("Campos faltantes o inválidos según validator:", req.validationErrors?.() || "sin errores de validación");
         const dateslist = await Datelist.create(req.body)
         res.status(201).json({ data: dateslist })
     } catch (error) {
