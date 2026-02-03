@@ -22,8 +22,8 @@ router.post("/",
     //  body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
     createProduct
 )
-router.get("/availability/:barber",
-    param("barber").notEmpty().withMessage("Nombre de barbero requerido"),
+router.get("/:barber",
+    param("barber").trim().notEmpty().withMessage("Nombre de barbero requerido"),
     handlerInputErrors,
     getBarberAvailability
 )
