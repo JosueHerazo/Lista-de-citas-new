@@ -37,9 +37,9 @@ class Datelist extends Model {
     declare client: string;
 
     @Column({
-        type: DataType.BIGINT()
+        type: DataType.STRING()
     })
-    declare phone: number;
+    declare phone: string;
     @Column({
         type: DataType.INTEGER, // Guardaremos minutos (30, 60, etc)
         allowNull: false,
