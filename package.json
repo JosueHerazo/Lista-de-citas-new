@@ -24,6 +24,7 @@
     "@cloudinary/url-gen": "^1.22.0",
     "@types/jest": "^30.0.0",
     "@types/supertest": "^6.0.3",
+    "ai": "^6.0.68",
     "cloudinary": "^1.41.3",
     "colors": "^1.4.0",
     "cors": "^2.8.6",
