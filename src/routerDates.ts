@@ -7,8 +7,8 @@ const router = Router()
 
 //  Routing
 // Obtener todas las citas (para el admin)
-router.get("/availability/:barber",
-param("barber").trim().notEmpty().withMessage("Nombre de barbero requerido"),
+router.get("/:barber",
+param("barber").notEmpty().withMessage("Nombre de barbero requerido"),
 handlerInputErrors,
 getBarberAvailability)
 router.get("/",
