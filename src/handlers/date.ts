@@ -1,6 +1,7 @@
 
 import {Request, Response} from "express"
 import Datelist from "../models/Datelist.models"
+import { validationResult } from "express-validator/lib"
 
 
 export const getProducts = async (req: Request, res: Response) => {
@@ -15,19 +16,27 @@ export const getProducts = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response) => {
     try {
         console.log("Body recibido en POST /api/date:", req.body);
-  console.log("Campos faltantes o inválidos según validator:", req.validationErrors?.() || "sin errores de validación");
+        // Esto te dirá EXACTAMENTE qué campo está fallando
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log("❌ Errores de validación:", errors.array());
+            return res.status(400).json({ errors: errors.array() });
+        }
+        console.log("✅ Body recibido correctamente:", req.body);
         const dateslist = await Datelist.create(req.body)
-        res.status(201).json({ data: dateslist })
+        res.status(201).json({ 
+            message: "Cita creada correctamente",
+            data: dateslist })
     } catch (error) {
-        console.log(error)
-    }
+        console.log("🔥 Error en el servidor:", error);
+        res.status(500).json({ error: "Error interno" });    }
 }
 
 export const getBarberAvailability = async (req: Request, res: Response) => {
     
     try {
         const { barber} = req.params;  
-console.log(`[BACKEND] Buscando citas para: ${barber}`);        // el handeler es el que hace la magia con el param de barber y busca todas las citas donde el barber y toma la lista de citas
+        console.log("📩 Petición recibida para barbero:", req.params.barber);
         const appointment = await Datelist.findAll({
             where: { barber },     
             attributes: ['dateList']
@@ -39,14 +48,7 @@ console.log(`[BACKEND] Buscando citas para: ${barber}`);        // el handeler e
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
-export const createAppointment= async (req: Request, res: Response) => {
-    try {
-        const appointment = await Datelist.create(req.body);
-        res.status(201).json({ data: appointment });
-    } catch (error) {
-        res.status(400).json({ error: "Error al crear la cita" });
-    }
-}
+
 // Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
 export const deleteProduct = async (req: Request, res: Response) => {}
 export const getProductById = async (req: Request, res: Response) => {}

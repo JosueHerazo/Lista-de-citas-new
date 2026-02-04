@@ -1,7 +1,6 @@
 import express from "express"
-import  { CorsOptions } from "cors"
+import  cors, { CorsOptions  } from "cors"
 import morgan from "morgan"
-import router from "./routerDates"
 import db from "./config/db"
 import routerDates from "./routerDates"
 import routerNews from "./routerNews"
@@ -9,7 +8,7 @@ import routerNews from "./routerNews"
 async function connectDB() {
     try {
         await db.authenticate()
-        db.sync()
+        await db.sync({alter: true})
         console.log("Conexion exitosa a la DB")
     } catch (error) {
         console.log("Hubo un error al conectar a la DB");
@@ -22,7 +21,7 @@ const server = express()
 // Configuración de CORS Robusta
 const whitelist = [
     process.env.FRONTEND_URL,   
-    process.env.FRONTEND_URL_DATE
+    process.env.FRONTEND_URL_DATE,
 ];
 
 const corsOptions: CorsOptions = {
@@ -34,7 +33,7 @@ const corsOptions: CorsOptions = {
         }
     }
 }
-
+server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
 

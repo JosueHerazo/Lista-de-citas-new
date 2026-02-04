@@ -25,7 +25,7 @@ class Datelist extends Model {
     
     @Column({
         type: DataType.STRING(),
-        allowNull: true
+        allowNull: false
     })
     declare dateList: string;
 
@@ -43,7 +43,7 @@ class Datelist extends Model {
     @Column({
         type: DataType.INTEGER, // Guardaremos minutos (30, 60, etc)
         allowNull: false,
-        defaultValue: 30
+        
     })
     declare duration: number;
     
