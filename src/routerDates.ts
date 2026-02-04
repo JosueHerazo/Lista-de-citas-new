@@ -11,11 +11,11 @@ const router = Router()
 router.get("/",
     getProducts
 )
-router.get("/availability/:barber",
-    param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-    handlerInputErrors,
-    getBarberAvailability
-)
+// router.get("/availability/:barber",
+//     param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
+//     handlerInputErrors,
+//     getBarberAvailability
+// )
 // Crear una cita nueva
 router.post("/",
     // validacion
