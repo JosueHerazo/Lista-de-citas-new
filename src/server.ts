@@ -4,6 +4,7 @@ import morgan from "morgan"
 import db from "./config/db"
 import routerDates from "./routerDates"
 import routerNews from "./routerNews"
+import routerAvailability from "./routerAvailability"
 
 async function connectDB() {
     try {
@@ -22,7 +23,9 @@ const server = express()
 const whitelist = [
     process.env.FRONTEND_URL,   
     process.env.FRONTEND_URL_DATE,
-    "http://localhost:5173"
+    "https://cita-corte.netlify.app"
+    // "http://localhost:5173",
+    //  "http://localhost:4000"
 ];
 
 const corsOptions: CorsOptions = {
@@ -32,12 +35,18 @@ const corsOptions: CorsOptions = {
         } else {
             callback(new Error("Error de CORS: Origen no permitido"))
         }
-    }
+    },
+        credentials: true // <-- Agrega esto si necesitas cookies/sesiones
 }
 server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
+server.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
 
 server.use("/api/date", routerDates)
+server.use("/api/availability", routerAvailability) // Nueva ruta
 server.use("/api/news", routerNews)
 export default server

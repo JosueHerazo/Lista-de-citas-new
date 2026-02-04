@@ -51,6 +51,20 @@ export const getBarberAvailability = async (req: Request, res: Response) => {
 
 // Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
 export const deleteProduct = async (req: Request, res: Response) => {}
-export const getProductById = async (req: Request, res: Response) => {}
+export const getProductById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;  // Usar id, no barber
+        const appointment = await Datelist.findByPk(id);
+        
+        if (!appointment) {
+            return res.status(404).json({ error: "Cita no encontrada" });
+        }
+        
+        res.json({ data: appointment });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+}
 export const updateAvailability = async (req: Request, res: Response) => {}
 export const UpdateProduct = async (req: Request, res: Response) => {}

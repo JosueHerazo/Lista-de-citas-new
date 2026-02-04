@@ -5,6 +5,7 @@ import { handlerInputErrors } from "./middleware"
 
 const router = Router()
 
+
 //  Routing
 // Obtener todas las citas (para el admin)
 router.get("/",
@@ -27,10 +28,6 @@ router.post("/",
     handlerInputErrors,
     createProduct
 )
-router.get("/barber/:barber",
-param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-handlerInputErrors,
-getBarberAvailability)
     
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
