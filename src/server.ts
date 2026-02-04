@@ -67,4 +67,14 @@ server.use((req, res, next) => {
 server.use("/api/date", routerDates)
 server.use("/api/availability", routerAvailability) // Nueva ruta
 server.use("/api/news", routerNews)
+server.get('/api/availability/:barber', (req, res) => {
+    const { barber } = req.params;
+    console.log(`📡 Ruta de disponibilidad llamada para: ${barber}`);
+    res.json({ 
+        success: true, 
+        message: `Disponibilidad para ${barber}`,
+        test: true,
+        data: []
+    });
+});
 export default server
