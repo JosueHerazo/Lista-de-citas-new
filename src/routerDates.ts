@@ -27,36 +27,34 @@ router.post("/",
     handlerInputErrors,
     createProduct
 )
-router.get("/:barber",
+router.get("/barber/:barber",
 param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
 handlerInputErrors,
 getBarberAvailability)
     
-router.get("/",
-    param("barber").isInt().withMessage("ID no valido"),
+router.get("/:id",
+    param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     getProductById)
 // PUT SI ENVIAS UNA PARTE LAS DEMAS PARTES DEL OBJETO SE ENVIAN VACIAS 
-router.put("/", 
-    param("barber").isInt().withMessage("ID no valido"),
+router.put("/:id", 
+    param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     UpdateProduct)
 // CON PATCH SE PUEDE MODIFICAR PARTES DEL OBJETO SIN QUE MODIFIQUE LAS DEMAS PARTES DEL OBJETO
 
 // con patch se envie la disponibilidad del product solo se toma del dataValue pel producto para motificar el boolean de true a false
-router.patch("/",
-    param("barber").isInt().withMessage("ID no valido"),
+router.patch("/:id/availability",
+    param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     updateAvailability)
 
-router.delete("/",  
-    param("barber").isInt().withMessage("ID no valido"),
+router.delete("/:id",  
+    param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors, 
     deleteProduct
     
 )
-// routerDates.ts
-router.get("/", getProductById);
 
 
 
