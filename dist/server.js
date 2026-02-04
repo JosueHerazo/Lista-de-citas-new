@@ -48,17 +48,17 @@ server.get('/api/test', (req, res) => {
         routes: ['/api/date', '/api/availability', '/api/news']
     });
 });
-server.get('/api/debug-routes', (req, res) => {
-    const routes = server._router.stack
-        .filter(r => r.route)
-        .map(r => {
-        return {
-            path: r.route.path,
-            method: Object.keys(r.route.methods)[0]
-        };
-    });
-    res.json({ routes });
-});
+// server.get('/api/debug-routes', (req, res) => {
+//     const routes = server._router.stack
+//         .filter(r => r.route)
+//         .map(r => {
+//             return {
+//                 path: r.route.path,
+//                 method: Object.keys(r.route.methods)[0]
+//             };
+//         });
+//     res.json({ routes });
+// });
 server.use((0, cors_1.default)(corsOptions));
 server.use(express_1.default.json());
 server.use((0, morgan_1.default)("dev"));
@@ -69,5 +69,15 @@ server.use((req, res, next) => {
 server.use("/api/date", routerDates_1.default);
 server.use("/api/availability", routerAvailability_1.default); // Nueva ruta
 server.use("/api/news", routerNews_1.default);
+server.get('/api/availability/:barber', (req, res) => {
+    const { barber } = req.params;
+    console.log(`📡 Ruta de disponibilidad llamada para: ${barber}`);
+    res.json({
+        success: true,
+        message: `Disponibilidad para ${barber}`,
+        test: true,
+        data: []
+    });
+});
 exports.default = server;
 //# sourceMappingURL=server.js.map

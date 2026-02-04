@@ -1,44 +1,61 @@
-import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
-import Date from './Datelist.models';
+// Ejemplo de modelo corregido
+import { Table, Model, DataType, ForeignKey, BelongsTo, Column } from 'sequelize-typescript';
+import Client from './Clients.models';
 
 @Table({
-    tableName: 'clients'
+    tableName: 'dates',
+    timestamps: true
 })
-class Client extends Model {
+class Datelist extends Model {
     @Column({
         type: DataType.STRING(100),
         allowNull: false
     })
-    declare name: string;
+    declare service: string;
 
     @Column({
-        type: DataType.STRING(), // Guardamos como string para evitar problemas de ceros iniciales
-        allowNull: false,
-        unique: true
+        type: DataType.FLOAT
     })
-    declare password: string;
-    @Column({
-        type: DataType.STRING(), // Guardamos como string para evitar problemas de ceros iniciales
-        allowNull: false,
-        unique: true
-    })
-    declare email: string;
-    @Column({
-        type: DataType.INTEGER(), // Guardamos como string para evitar problemas de ceros iniciales
-        allowNull: false,
-        unique: true
-    })
-    declare phone: number;
-    @Column({
-        type: DataType.BOOLEAN(), // Guardamos como string para evitar problemas de ceros iniciales
-        allowNull: false,
-        unique: true
-    })
-    declare terms: boolean;
+    declare price: number;
 
-    // Relación: Un cliente puede tener muchos servicios registrados
-    @HasMany(() => Date)
-    declare services: Date[];
+    @Column({
+        type: DataType.STRING(50),
+        allowNull: false
+    })
+    declare barber: string;
+    
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    declare dateList: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true
+    })
+    declare client: string;
+
+    @Column({
+        type: DataType.STRING
+    })
+    declare phone: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        defaultValue: 30
+    })
+    declare duration: number;
+    
+    @ForeignKey(() => Client)
+    @Column({
+        type: DataType.INTEGER
+    })
+    declare clientId: number;
+    
+    @BelongsTo(() => Client)
+    declare clientUsuario: Client;
 }
 
-export default Client;
+export default Datelist;

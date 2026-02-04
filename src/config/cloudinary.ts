@@ -13,6 +13,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'latinos_vip_noticias',
     resource_type: 'auto',
+                allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'mp4', 'mov'],
     // @ts-ignore --- Esto silencia el error de TypeScript si persiste
   } as any, 
 });

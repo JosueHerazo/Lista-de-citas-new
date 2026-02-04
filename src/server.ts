@@ -63,18 +63,63 @@ server.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
-
+// En server.ts, después de los imports y antes de server.use("/api/date", ...)
+server.get('/api/availability/:barber', async (req, res) => {
+    try {
+        const { barber } = req.params;  
+        console.log("📡 Ruta directa llamada para barbero:", barber);
+        
+        // Importa Datelist directamente aquí si es necesario
+        const Datelist = require('./models/Datelist.models').default;
+        
+        const appointment = await Datelist.findAll({
+            where: { barber },     
+            attributes: ['dateList', 'duration']
+        });   
+        
+        const busySlots = appointment.map((app: any) => ({
+            start: app.dateList,
+            duration: app.duration || 30
+        }));
+        
+        console.log(`📊 Encontrados ${busySlots.length} slots ocupados para ${barber}`);
+        res.json({ 
+            success: true,
+            data: busySlots,
+            count: busySlots.length
+        });
+        
+    } catch (error: any) {
+        console.error("❌ Error en ruta directa:", error);
+        res.status(500).json({ 
+            error: "Error en el servidor",
+            message: error.message 
+        });
+    }
+});
 server.use("/api/date", routerDates)
 server.use("/api/availability", routerAvailability) // Nueva ruta
 server.use("/api/news", routerNews)
-server.get('/api/availability/:barber', (req, res) => {
-    const { barber } = req.params;
-    console.log(`📡 Ruta de disponibilidad llamada para: ${barber}`);
-    res.json({ 
-        success: true, 
-        message: `Disponibilidad para ${barber}`,
-        test: true,
-        data: []
+server.get('/api/debug', (req, res) => {
+    const routes: any[] = [];
+    server._router.stack.forEach((middleware: any) => {
+        if (middleware.route) {
+            routes.push({
+                path: middleware.route.path,
+                method: Object.keys(middleware.route.methods)[0]
+            });
+        } else if (middleware.name === 'router') {
+            middleware.handle.stack.forEach((handler: any) => {
+                if (handler.route) {
+                    routes.push({
+                        path: handler.route.path,
+                        method: Object.keys(handler.route.methods)[0],
+                        router: middleware.regexp.toString()
+                    });
+                }
+            });
+        }
     });
+    res.json({ routes });
 });
 export default server

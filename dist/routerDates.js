@@ -8,6 +8,11 @@ const router = (0, express_1.Router)();
 //  Routing
 // Obtener todas las citas (para el admin)
 router.get("/", date_1.getProducts);
+// router.get("/availability/:barber",
+//     param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
+//     handlerInputErrors,
+//     getBarberAvailability
+// )
 // Crear una cita nueva
 router.post("/", 
 // validacion
