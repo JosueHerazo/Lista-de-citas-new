@@ -8,7 +8,7 @@ import routerNews from "./routerNews"
 async function connectDB() {
     try {
         await db.authenticate()
-        await db.sync({force: true})
+        await db.sync()
         console.log("Conexion exitosa a la DB")
     } catch (error) {
         console.log("Hubo un error al conectar a la DB");
@@ -22,6 +22,7 @@ const server = express()
 const whitelist = [
     process.env.FRONTEND_URL,   
     process.env.FRONTEND_URL_DATE,
+    "http://localhost:5173"
 ];
 
 const corsOptions: CorsOptions = {
