@@ -7,31 +7,30 @@ const router = Router()
 
 //  Routing
 // Obtener todas las citas (para el admin)
-router.get("/availability/:barber",
-param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-handlerInputErrors,
-getBarberAvailability)
 router.get("/",
     getProducts
 )
 // Crear una cita nueva
 router.post("/",
     // validacion
-     body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
+    body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
     body("price")
-        .notEmpty().withMessage("El valor del producto no puede ir vacio")
-        .isNumeric().withMessage("El precio debe ser un número")
-        .custom(value => parseFloat(value) >= 0).withMessage("Precio no valido"),
-     handlerInputErrors,
-     body("barber").isString().notEmpty().withMessage("El nombre del barbero no puede ir vacio").trim(),
-     body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
-     body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
-     body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
-     body("duration").isNumeric().notEmpty().withMessage("tiempo de service"),
-     handlerInputErrors,
-     createProduct
-
-    )
+    .notEmpty().withMessage("El valor del producto no puede ir vacio")
+    .isNumeric().withMessage("El precio debe ser un número")
+    .custom(value => parseFloat(value) >= 0).withMessage("Precio no valido"),
+    handlerInputErrors,
+    body("barber").isString().notEmpty().withMessage("El nombre del barbero no puede ir vacio").trim(),
+    body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
+    body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
+    body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
+    body("duration").isNumeric().notEmpty().withMessage("tiempo de service"),
+    handlerInputErrors,
+    createProduct
+)
+router.get("/availability/:barber",
+param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
+handlerInputErrors,
+getBarberAvailability)
     
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
