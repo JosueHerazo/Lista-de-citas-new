@@ -37,28 +37,62 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Like = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-// import Client from './Clients.models';
-let Datelist = (() => {
+const New_model_1 = __importDefault(require("./New.model"));
+let Like = (() => {
     let _classDecorators = [(0, sequelize_typescript_1.Table)({
-            tableName: 'dates'
+            tableName: 'likes',
+            timestamps: true // Útil para saber cuándo se dio el like 🕒
         })];
     let _classDescriptor;
     let _classExtraInitializers = [];
     let _classThis;
     let _classSuper = sequelize_typescript_1.Model;
-    var Datelist = _classThis = class extends _classSuper {
+    let _userId_decorators;
+    let _userId_initializers = [];
+    let _userId_extraInitializers = [];
+    let _newsId_decorators;
+    let _newsId_initializers = [];
+    let _newsId_extraInitializers = [];
+    let _news_decorators;
+    let _news_initializers = [];
+    let _news_extraInitializers = [];
+    var Like = _classThis = class extends _classSuper {
+        constructor() {
+            super(...arguments);
+            this.userId = __runInitializers(this, _userId_initializers, void 0);
+            this.newsId = (__runInitializers(this, _userId_extraInitializers), __runInitializers(this, _newsId_initializers, void 0));
+            this.news = (__runInitializers(this, _newsId_extraInitializers), __runInitializers(this, _news_initializers, void 0));
+            __runInitializers(this, _news_extraInitializers);
+        }
     };
-    __setFunctionName(_classThis, "Datelist");
+    __setFunctionName(_classThis, "Like");
     (() => {
         const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(_classSuper[Symbol.metadata] ?? null) : void 0;
+        _userId_decorators = [(0, sequelize_typescript_1.Column)({
+                type: sequelize_typescript_1.DataType.STRING,
+                allowNull: false
+            })];
+        _newsId_decorators = [(0, sequelize_typescript_1.ForeignKey)(() => New_model_1.default), (0, sequelize_typescript_1.Column)({
+                type: sequelize_typescript_1.DataType.INTEGER,
+                allowNull: false
+            })];
+        _news_decorators = [(0, sequelize_typescript_1.BelongsTo)(() => New_model_1.default)];
+        __esDecorate(null, null, _userId_decorators, { kind: "field", name: "userId", static: false, private: false, access: { has: obj => "userId" in obj, get: obj => obj.userId, set: (obj, value) => { obj.userId = value; } }, metadata: _metadata }, _userId_initializers, _userId_extraInitializers);
+        __esDecorate(null, null, _newsId_decorators, { kind: "field", name: "newsId", static: false, private: false, access: { has: obj => "newsId" in obj, get: obj => obj.newsId, set: (obj, value) => { obj.newsId = value; } }, metadata: _metadata }, _newsId_initializers, _newsId_extraInitializers);
+        __esDecorate(null, null, _news_decorators, { kind: "field", name: "news", static: false, private: false, access: { has: obj => "news" in obj, get: obj => obj.news, set: (obj, value) => { obj.news = value; } }, metadata: _metadata }, _news_initializers, _news_extraInitializers);
         __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
-        Datelist = _classThis = _classDescriptor.value;
+        Like = _classThis = _classDescriptor.value;
         if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
         __runInitializers(_classThis, _classExtraInitializers);
     })();
-    return Datelist = _classThis;
+    return Like = _classThis;
 })();
-exports.default = Datelist;
-//# sourceMappingURL=Datelist.models.js.map
+exports.Like = Like;
+exports.default = Like;
+//# sourceMappingURL=Likes.model.js.map

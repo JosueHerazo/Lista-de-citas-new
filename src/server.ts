@@ -38,6 +38,24 @@ const corsOptions: CorsOptions = {
     },
         credentials: true // <-- Agrega esto si necesitas cookies/sesiones
 }
+server.get('/api/test', (req, res) => {
+    res.json({ 
+        message: 'API funcionando',
+        timestamp: new Date().toISOString(),
+        routes: ['/api/date', '/api/availability', '/api/news']
+    });
+});
+// server.get('/api/debug-routes', (req, res) => {
+//     const routes = server._router.stack
+//         .filter(r => r.route)
+//         .map(r => {
+//             return {
+//                 path: r.route.path,
+//                 method: Object.keys(r.route.methods)[0]
+//             };
+//         });
+//     res.json({ routes });
+// });
 server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))

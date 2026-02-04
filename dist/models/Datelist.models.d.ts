@@ -4,10 +4,12 @@ declare class Datelist extends Model {
     service: string;
     price: number;
     barber: string;
-    dateList: bigint;
+    dateList: string;
     client: string;
-    phone: number;
+    phone: string;
+    duration: number;
     clientId: number;
     clientUsuario: Client;
 }
 export default Datelist;
+//# sourceMappingURL=Datelist.models.d.ts.map
