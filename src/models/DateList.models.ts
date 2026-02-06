@@ -39,6 +39,11 @@ class DateList extends Model {
         type: DataType.BIGINT()
     })
     declare phone: number;
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false // Por defecto las citas no están pagadas
+    })
+    declare isPaid: boolean;
     
     // --- AGREGA ESTO PARA ARREGLAR EL ERROR ---
     @ForeignKey(() => Client)
