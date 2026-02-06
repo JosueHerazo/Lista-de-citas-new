@@ -37,17 +37,13 @@ const getProductById = async (req, res) => { };
 exports.getProductById = getProductById;
 // En tu controlador de Express (Sugerencia)
 const updateAppointmentStatus = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const appointment = await DateList_models_1.default.findByPk(id);
-        if (appointment) {
-            // Cambiamos el estado a pagado
-            await appointment.update({ isPaid: true });
-            res.json({ data: appointment });
-        }
-    }
-    catch (error) {
-        res.status(500).json({ error: 'Error al actualizar' });
+    const { id } = req.params;
+    const appointment = await DateList_models_1.default.findByPk(id);
+    if (appointment) {
+        // IMPORTANTE: Cambia el booleano que uses para filtrar
+        appointment.isPaid = true;
+        await appointment.save();
+        res.json({ data: appointment });
     }
 };
 exports.updateAppointmentStatus = updateAppointmentStatus;

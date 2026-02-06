@@ -7,6 +7,7 @@ declare class DateList extends Model {
     dateList: string;
     client: string;
     phone: number;
+    isPaid: boolean;
     clientId: number;
     clientName: Client;
 }

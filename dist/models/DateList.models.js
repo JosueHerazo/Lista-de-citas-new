@@ -56,6 +56,13 @@ __decorate([
     __metadata("design:type", Number)
 ], DateList.prototype, "phone", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.BOOLEAN,
+        defaultValue: false // Por defecto las citas no están pagadas
+    }),
+    __metadata("design:type", Boolean)
+], DateList.prototype, "isPaid", void 0);
+__decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Clients_models_1.default),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER

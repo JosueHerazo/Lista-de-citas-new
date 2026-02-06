@@ -12,7 +12,7 @@ const routerDates_1 = __importDefault(require("./routerDates"));
 async function connectDB() {
     try {
         await db_1.default.authenticate();
-        db_1.default.sync(); // Sincroniza los modelos con la base de datos
+        db_1.default.sync({ alter: true }); // Sincroniza los modelos con la base de datos
         console.log("Conexion exitosa a la DB");
     }
     catch (error) {
