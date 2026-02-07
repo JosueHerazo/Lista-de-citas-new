@@ -1,44 +1,65 @@
-
-import {Request, Response} from "express"
+import { Request, Response } from "express"
 import Datelist from "../models/DateList.models"
 
-
-export const getProducts = async (req: Request, res: Response) => {
+// Obtener una cita por ID (Para el loader de edición)
+export const getProductById = async (req: Request, res: Response) => {
     try {
-        const dateslist = await Datelist.findAll({
-            order: [
-                ["createdAt", "DESC"]
-            ],
-            attributes: {exclude: ["updatedAt", ]}, 
-            
-        })
-        res.json({ data: dateslist })
+        const { id } = req.params
+        const appointment = await Datelist.findByPk(id)
+        if (!appointment) {
+            return res.status(404).json({ error: 'Cita no encontrada' })
+        }
+        res.json({ data: appointment })
     } catch (error) {
         console.log(error)
     }
 }
 
-export const createProduct = async (req: Request, res: Response) => {
+// Editar la cita completa (Para el componente EditDate)
+export const UpdateProduct = async (req: Request, res: Response) => {
     try {
-        const dateslist = await Datelist.create(req.body)
-        res.status(201).json({ data: dateslist })
+        const { id } = req.params
+        const appointment = await Datelist.findByPk(id)
+        if (!appointment) {
+            return res.status(404).json({ error: 'Cita no encontrada' })
+        }
+        
+        // Actualiza con los datos del body
+        await appointment.update(req.body)
+        res.json({ data: appointment })
     } catch (error) {
         console.log(error)
     }
 }
 
-// Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
-export const deleteProduct = async (req: Request, res: Response) => {}
-export const getProductById = async (req: Request, res: Response) => {}
-// En tu controlador de Express (Sugerencia)
-export const updateAppointmentStatus = async (req, res) => {
-    const { id } = req.params;
-    const appointment = await Datelist.findByPk(id);
-    if (appointment) {
-        // IMPORTANTE: Cambia el booleano que uses para filtrar
-        appointment.isPaid = true; 
-        await appointment.save();
-        res.json({ data: appointment });
+// Cambiar solo el estado (Para cuando registras el cobro)
+export const updateAppointmentStatus = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const appointment = await Datelist.findByPk(id)
+        if (!appointment) {
+            return res.status(404).json({ error: 'Cita no encontrada' })
+        }
+        
+        appointment.isPaid = !appointment.dataValues.isPaid // Invierte el estado
+        await appointment.save()
+        res.json({ data: appointment })
+    } catch (error) {
+        console.log(error)
     }
 }
-export const UpdateProduct = async (req: Request, res: Response) => {}
+
+// Eliminar cita
+export const deleteProduct = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const appointment = await Datelist.findByPk(id)
+        if (!appointment) {
+            return res.status(404).json({ error: 'Cita no encontrada' })
+        }
+        await appointment.destroy()
+        res.json({ data: 'Cita eliminada' })
+    } catch (error) {
+        console.log(error)
+    }
+}
