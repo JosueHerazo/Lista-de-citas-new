@@ -11,12 +11,7 @@ const router = Router()
 router.get("/",
     getProducts
 )
-// router.get("/availability/:barber",
-//     param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-//     handlerInputErrors,
-//     getBarberAvailability
-// )
-// Crear una cita nueva
+
 router.post("/",
     // validacion
     body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
@@ -33,7 +28,11 @@ router.post("/",
     handlerInputErrors,
     createProduct
 )
-    
+//     router.get("/availability/:barber",
+//     param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
+//     handlerInputErrors,
+//     getBarberAvailability
+// )
 router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,

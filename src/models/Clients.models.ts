@@ -56,6 +56,8 @@ class Datelist extends Model {
     
     @BelongsTo(() => Client)
     declare clientUsuario: Client;
+    @Column(DataType.STRING) // Asegúrate de que NO diga DataType.INTEGER
+    password!: string
 }
 
 export default Datelist;

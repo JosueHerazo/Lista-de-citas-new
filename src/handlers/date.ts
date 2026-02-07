@@ -31,23 +31,29 @@ export const createProduct = async (req: Request, res: Response) => {
         console.log("🔥 Error en el servidor:", error);
         res.status(500).json({ error: "Error interno" });    }
 }
-
 export const getBarberAvailability = async (req: Request, res: Response) => {
-    
     try {
-        const { barber} = req.params;  
-        console.log("📩 Petición recibida para barbero:", req.params.barber);
+        const { barber } = req.params;  
+        console.log("📩 Petición recibida para barbero:", barber);
+        
         const appointment = await Datelist.findAll({
             where: { barber },     
-            attributes: ['dateList']
+            attributes: ['dateList', 'duration'] // Incluye duración
         });   
-        const busySlots = appointment.map(app => app.dateList);
-        // Respondemos con el array de fechas
+        
+        const busySlots = appointment.map(app => ({
+            start: app.dateList,
+            duration: app.duration || 30 // Valor por defecto 30 min
+        }));
+        
+        console.log(`📊 Encontrados ${busySlots.length} slots ocupados para ${barber}`);
         res.json({ data: busySlots })
     } catch (error) {
+        console.error("Error en getBarberAvailability:", error);
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
+
 
 // Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
 export const deleteProduct = async (req: Request, res: Response) => {}
