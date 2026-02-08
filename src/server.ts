@@ -8,7 +8,7 @@ import routerDates from "./routerDates"
 async function connectDB() {
     try {
         await db.authenticate()
-        db.sync({force: true}) // Sincroniza los modelos con la base de datos
+        db.sync() // Sincroniza los modelos con la base de datos
         console.log("Conexion exitosa a la DB")
     } catch (error) {
         console.log("Hubo un error al conectar a la DB");
@@ -22,7 +22,7 @@ const server = express()
 const whitelist = [
     process.env.FRONTEND_URL, // Asegúrate que en Render esto sea https://ventas-latinosvip-frontend-nu.vercel.app
     process.env.FRONTEND_URL_DATE,
-"https://localhost:5173"
+// "https://localhost:5173"
 ];
 
 const corsOptions: CorsOptions = {
