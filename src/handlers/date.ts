@@ -5,7 +5,7 @@ import DateList from "../models/DateList.models"
 
 
 
-export const getProducts = async (req: Request, res: Response) => {
+export const getDates = async (req: Request, res: Response) => {
 
     try {
         const service = await DateList.findAll({
@@ -24,7 +24,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 }
 
-export const createProduct = async  (req: Request, res: Response) =>{
+export const createDate = async  (req: Request, res: Response) =>{
     
     try {
         const service = await DateList.create(req.body)
@@ -38,7 +38,7 @@ export const createProduct = async  (req: Request, res: Response) =>{
 }
 
 // Obtener una cita por ID (Para el loader de edición)
-export const getProductById = async (req: Request, res: Response) => {
+export const getDateById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
@@ -52,7 +52,7 @@ export const getProductById = async (req: Request, res: Response) => {
 }
 
 // Editar la cita completa (Para el componente EditDate)
-export const UpdateProduct = async (req: Request, res: Response) => {
+export const UpdateDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
@@ -86,7 +86,7 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
 }
 
 // Eliminar cita
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
