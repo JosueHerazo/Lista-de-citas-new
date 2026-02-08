@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Client from '../models/Clients.models'
-import Datelist from 'models/Datelist.models'
+import Datelist from '../models/Datelist.models'
 import { validationResult } from 'express-validator/lib'
 
 export const getProducts = async (req: Request, res: Response) => {
