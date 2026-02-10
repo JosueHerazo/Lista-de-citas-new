@@ -7,9 +7,12 @@ const router = Router()
 
 //  Routing
 // Obtener todas las citas (para el admin)
-router.get("/",
-    getProducts
+router.get("/:barber",
+param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
+handlerInputErrors,
+getBarberAvailability
 )
+
 // Crear una cita nueva
 router.post("/",
     // validacion
@@ -26,11 +29,6 @@ router.post("/",
     body("duration").isNumeric().notEmpty().withMessage("tiempo de service"),
     handlerInputErrors,
     createProduct
-)
-router.get("/availability/:barber",
-param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-handlerInputErrors,
-getBarberAvailability
 )
     
 router.get("/",
@@ -57,7 +55,6 @@ router.delete("/",
     
 )
 // routerDates.ts
-router.get("/", getProductById);
 
 
 
