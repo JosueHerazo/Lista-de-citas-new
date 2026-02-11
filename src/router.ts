@@ -7,10 +7,11 @@ const router = Router()
 
 //  Routing
 // Obtener todas las citas (para el admin)
-router.get("/:barber",
-param("barber").isString().trim().notEmpty().withMessage("Nombre de barbero requerido"),
-handlerInputErrors,
-getBarberAvailability
+// Cambia la ruta para que sea más específica y no choque con otras
+router.get("/availability/:barber", 
+    param("barber").notEmpty().withMessage("Nombre de barbero requerido").trim(),
+    handlerInputErrors,
+    getBarberAvailability
 )
 
 // Crear una cita nueva
@@ -30,25 +31,25 @@ router.post("/",
     handlerInputErrors,
     createProduct
 )
-    
-router.get("/",
+
+router.get("/:id",
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     getProductById)
 // PUT SI ENVIAS UNA PARTE LAS DEMAS PARTES DEL OBJETO SE ENVIAN VACIAS 
-router.put("/", 
+router.put("/:id", 
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     UpdateProduct)
 // CON PATCH SE PUEDE MODIFICAR PARTES DEL OBJETO SIN QUE MODIFIQUE LAS DEMAS PARTES DEL OBJETO
 
 // con patch se envie la disponibilidad del product solo se toma del dataValue pel producto para motificar el boolean de true a false
-router.patch("/",
+router.patch("/:id",
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors,
     updateAvailability)
 
-router.delete("/",  
+router.delete("/:id",  
     param("id").isInt().withMessage("ID no valido"),
     handlerInputErrors, 
     deleteProduct
