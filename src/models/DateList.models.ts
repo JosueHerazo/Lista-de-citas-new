@@ -36,9 +36,9 @@ class DateList extends Model {
     declare client: string;
     
    @Column({
-        type: DataType.BIGINT()
+        type: DataType.STRING()
     })
-    declare phone: number;
+    declare phone: string;
     @Column({
         type: DataType.BOOLEAN,
         defaultValue: false // Por defecto las citas no están pagadas
