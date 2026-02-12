@@ -4,6 +4,9 @@ import { createProduct, deleteProduct, getBarberAvailability, getProductById, ge
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
+router.get("/health", (req, res) => {
+    res.send("El router de citas está respondiendo correctamente");
+})
 
 //  Routing
 // Obtener todas las citas (para el admin)
