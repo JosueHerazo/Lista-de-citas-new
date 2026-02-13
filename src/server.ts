@@ -38,7 +38,7 @@ server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
 
-server.use("/api/date", routerDates)
 server.use("/api/service", router)
+server.use("/api/date", routerDates)
 
 export default server
