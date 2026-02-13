@@ -34,9 +34,9 @@ class Service extends Model {
     declare client: string;
 
     @Column({
-        type: DataType.BIGINT() // Use BIGINT because phone numbers exceed standard INTEGER limits
+        type: DataType.STRING() // Use BIGINT because phone numbers exceed standard INTEGER limits
     })
-    declare phone: number
+    declare phone: string
     // Dentro de tu modelo Service actual, añade:
 @Column({
     type: DataType.BOOLEAN,

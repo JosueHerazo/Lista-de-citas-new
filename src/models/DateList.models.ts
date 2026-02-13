@@ -36,7 +36,8 @@ class DateList extends Model {
     declare client: string;
     
    @Column({
-        type: DataType.STRING()
+        type: DataType.STRING(),
+        allowNull: false
     })
     declare phone: string;
     @Column({
