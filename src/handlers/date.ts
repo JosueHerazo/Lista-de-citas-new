@@ -1,66 +1,45 @@
 import { Request, Response } from "express"
 import Datelist from "../models/DateList.models"
 import Client from "../models/Clients.models"
-import DateList from "../models/DateList.models"
-
-
 
 export const getDates = async (req: Request, res: Response) => {
-
     try {
-        const service = await DateList.findAll({
-            order: [
-                ["createdAt", "DESC"]
-            ],
-            attributes: {exclude: ["updatedAt", ]}, 
+        const service = await Datelist.findAll({
+            order: [["createdAt", "DESC"]],
+            attributes: { exclude: ["updatedAt"] },
             include: [Client]
         })
-        
-        res.json({data:service})
+        res.json({ data: service })
     } catch (error) {
-        console.log(error);
-        
+        console.log(error)
     }
-
 }
 
-export const createDate = async  (req: Request, res: Response) =>{
-    
+export const createDate = async (req: Request, res: Response) => {
     try {
-        const service = await DateList.create(req.body)
-        res.json({data: service})
-        
-    } catch (error) {   
-        console.log(error);
-        
-        
+        const service = await Datelist.create(req.body)
+        res.json({ data: service })
+    } catch (error) {
+        console.log(error)
     }
 }
 
-// Obtener una cita por ID (Para el loader de edición)
 export const getDateById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
-        if (!appointment) {
-            return res.status(404).json({ error: 'Cita no encontrada' })
-        }
+        if (!appointment) return res.status(404).json({ error: 'Cita no encontrada' })
         res.json({ data: appointment })
     } catch (error) {
         console.log(error)
     }
 }
 
-// Editar la cita completa (Para el componente EditDate)
 export const UpdateDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
-        if (!appointment) {
-            return res.status(404).json({ error: 'Cita no encontrada' })
-        }
-        
-        // Actualiza con los datos del body
+        if (!appointment) return res.status(404).json({ error: 'Cita no encontrada' })
         await appointment.update(req.body)
         res.json({ data: appointment })
     } catch (error) {
@@ -68,31 +47,25 @@ export const UpdateDate = async (req: Request, res: Response) => {
     }
 }
 
-// Cambiar solo el estado (Para cuando registras el cobro)
+// ✅ FIX: update() en vez de asignación directa
 export const updateAppointmentStatus = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
-        if (!appointment) {
-            return res.status(404).json({ error: 'Cita no encontrada' })
-        }
-        
-        appointment.isPaid = !appointment.dataValues.isPaid // Invierte el estado
-        await appointment.save()
+        if (!appointment) return res.status(404).json({ error: 'Cita no encontrada' })
+        await appointment.update({ isPaid: !appointment.dataValues.isPaid })
         res.json({ data: appointment })
     } catch (error) {
         console.log(error)
     }
 }
 
-// Eliminar cita
+// ✅ FIX: destroy() funcionaba pero revisado y limpio
 export const deleteDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const appointment = await Datelist.findByPk(id)
-        if (!appointment) {
-            return res.status(404).json({ error: 'Cita no encontrada' })
-        }
+        if (!appointment) return res.status(404).json({ error: 'Cita no encontrada' })
         await appointment.destroy()
         res.json({ data: 'Cita eliminada' })
     } catch (error) {
