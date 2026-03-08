@@ -122,22 +122,19 @@ export const deleteProduct = async (req: Request, res: Response) => {
 }
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
-        const { barber } = req.params
-        console.log("📩 Petición recibida para barbero:", barber)
-        
-        const appointment = await Datelist.findAll({
-            where: { 
-                barber,
-                isPaid: false  // ✅ FIX: solo citas pendientes bloquean el horario
-            },
-            attributes: ['dateList']
-        })
+        const { barber } = req.params;
+        console.log("📩 Barbero:", barber);
 
-        const busySlots = appointment.map(app => app.dateList)
-        console.log("🔴 Slots ocupados:", busySlots)
-        res.json({ data: busySlots })
+        const appointments = await Datelist.findAll({
+            where: { barber },  // ✅ Sin filtro isPaid por ahora
+            attributes: ['dateList']
+        });
+
+        const busySlots = appointments.map(app => app.dateList);
+        console.log("🔴 Slots ocupados:", busySlots);
+        res.json({ data: busySlots });
     } catch (error) {
-        res.status(500).json({ error: "Error en el servidor" })
+        res.status(500).json({ error: "Error en el servidor" });
     }
 }
 
