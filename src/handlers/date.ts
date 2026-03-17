@@ -87,11 +87,11 @@ export const getBarberAvailability = async (req: Request, res: Response) => {
         const { barber } = req.params
         const appointments = await Datelist.findAll({
             where: { barber: { [Op.iLike]: barber.trim() } },
-            attributes: ['dateList', 'duration']
+            attributes: ['dateList']  // ← solo dateList, sin duration
         })
         const busySlots = appointments.map(app => ({
             dateList: app.dataValues.dateList,
-            duration: app.dataValues.duration || 30
+            duration: 30  // ← valor fijo por defecto
         }))
         res.json({ data: busySlots })
     } catch (error) {
