@@ -1,65 +1,70 @@
 import { Router } from "express"
-import { body, param} from "express-validator"
-import { createProduct, deleteProduct, getBarberAvailability, getProductById, getProducts, updateAvailability, UpdateProduct } from "./handlers/date.Handler"
+import { body, param } from "express-validator"
+import {
+    createProduct,
+    deleteProduct,
+    getBarberAvailability,
+    getProductById,
+    getProducts,
+    updateAvailability,
+    UpdateProduct
+} from "./handlers/date.Handler"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
-router.get("/health", (req, res) => {
-    res.send("El router de citas está respondiendo correctamente");
-})
 
-//  Routing
-// Obtener todas las citas (para el admin)
-// Cambia la ruta para que sea más específica y no choque con otras
-router.get("/availability/:barber", 
+// ── Availability (SIEMPRE antes de /:id) ─────────────────────
+router.get(
+    "/availability/:barber",
     param("barber").notEmpty().withMessage("Nombre de barbero requerido").trim(),
     handlerInputErrors,
     getBarberAvailability
 )
 
-// Crear una cita nueva
-router.post("/",
-    // validacion
-    body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
+// ── Crear cita ────────────────────────────────────────────────
+router.post(
+    "/",
+    body("service").notEmpty().withMessage("El servicio no puede ir vacío"),
     body("price")
-    .notEmpty().withMessage("El valor del producto no puede ir vacio")
-    .isNumeric().withMessage("El precio debe ser un número")
-    .custom(value => parseFloat(value) >= 0).withMessage("Precio no valido"),
-    handlerInputErrors,
-    body("barber").isString().notEmpty().withMessage("El nombre del barbero no puede ir vacio").trim(),
-    body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
-    body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
-    body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
-    body("duration").isNumeric().notEmpty().withMessage("tiempo de service"),
-    handlerInputErrors,
+        .notEmpty().withMessage("El precio no puede ir vacío")
+        .isNumeric().withMessage("El precio debe ser un número")
+        .custom(value => parseFloat(value) >= 0).withMessage("Precio no válido"),
+    body("barber").isString().notEmpty().withMessage("El barbero no puede ir vacío").trim(),
+    body("dateList").notEmpty().withMessage("La fecha no puede ir vacía"),
+    body("client").notEmpty().withMessage("El nombre no puede ir vacío"),
+    body("phone").notEmpty().withMessage("El teléfono no puede ir vacío"),
+    body("duration").isNumeric().notEmpty().withMessage("La duración es requerida"),
+    handlerInputErrors,  // ← UN SOLO handlerInputErrors al final de todas las validaciones
     createProduct
 )
 
-router.get("/:id",
-    param("id").isInt().withMessage("ID no valido"),
+// ── CRUD por ID (SIEMPRE al final) ────────────────────────────
+router.get(
+    "/:id",
+    param("id").isInt().withMessage("ID no válido"),
     handlerInputErrors,
-    getProductById)
-// PUT SI ENVIAS UNA PARTE LAS DEMAS PARTES DEL OBJETO SE ENVIAN VACIAS 
-router.put("/:id", 
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    UpdateProduct)
-// CON PATCH SE PUEDE MODIFICAR PARTES DEL OBJETO SIN QUE MODIFIQUE LAS DEMAS PARTES DEL OBJETO
-
-// con patch se envie la disponibilidad del product solo se toma del dataValue pel producto para motificar el boolean de true a false
-router.patch("/:id",
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    updateAvailability)
-
-router.delete("/:id",  
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors, 
-    deleteProduct
-    
+    getProductById
 )
-// routerDates.ts
 
+router.put(
+    "/:id",
+    param("id").isInt().withMessage("ID no válido"),
+    handlerInputErrors,
+    UpdateProduct
+)
 
+router.patch(
+    "/:id",
+    param("id").isInt().withMessage("ID no válido"),
+    handlerInputErrors,
+    updateAvailability
+)
 
- export default router
+router.delete(
+    "/:id",
+    param("id").isInt().withMessage("ID no válido"),
+    handlerInputErrors,
+    deleteProduct
+)
+
+export default router
