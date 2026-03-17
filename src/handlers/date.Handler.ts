@@ -123,17 +123,25 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         const { barber } = req.params;
-        console.log("📩 Barbero:", barber);
+        console.log("📩 Barbero recibido:", barber);
 
         const appointments = await Datelist.findAll({
-            where: { barber },  // ✅ Sin filtro isPaid por ahora
-            attributes: ['dateList']
+            where: { 
+                barber: { [Op.iLike]: barber.trim() }  // ignora mayúsculas
+            },
+            attributes: ['dateList', 'duration']
         });
 
-        const busySlots = appointments.map(app => app.dateList);
+        // Devolver objetos con fecha Y duración para bloquear rangos
+        const busySlots = appointments.map(app => ({
+            dateList: app.dateList,
+            duration: app.duration || 30
+        }));
+        
         console.log("🔴 Slots ocupados:", busySlots);
         res.json({ data: busySlots });
     } catch (error) {
+        console.error("Error getBarberAvailability:", error);
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
