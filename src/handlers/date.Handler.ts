@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import Client from '../models/Clients.models'
 import Datelist from '../models/Datelist.models'
 import { validationResult } from 'express-validator/lib'
+import { Op } from 'sequelize'  
 
 export const getProducts = async (req: Request, res: Response) => {
 
