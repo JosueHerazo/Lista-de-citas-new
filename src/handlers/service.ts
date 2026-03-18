@@ -18,7 +18,14 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        const service = await Service.create(req.body)
+        const service = await Service.build(req.body)
+        
+        // ✅ Asignar isPaid explícitamente antes de guardar
+        service.isPaid = req.body.isPaid === true || 
+                         req.body.isPaid === 'true' || 
+                         req.body.isPaid === 1
+        
+        await service.save()
         res.json({ data: service })
     } catch (error) {
         console.log(error)
