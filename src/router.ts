@@ -7,13 +7,25 @@ import {
     getProductById,
     getProducts,
     updateAvailability,
-    UpdateProduct
+    UpdateProduct,
+    getBarberos,
+    saveBarberos
 } from "./handlers/date.Handler"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
 
-// ── Availability (SIEMPRE antes de /:id) ─────────────────────
+// ── Barberos (ANTES de /:id) ──────────────────────────────────
+router.get("/barberos", getBarberos)
+
+router.post(
+    "/barberos",
+    body("barberos").isArray().withMessage("barberos debe ser un array"),
+    handlerInputErrors,
+    saveBarberos
+)
+
+// ── Availability (ANTES de /:id) ──────────────────────────────
 router.get(
     "/availability/:barber",
     param("barber").notEmpty().withMessage("Nombre de barbero requerido").trim(),
@@ -34,7 +46,7 @@ router.post(
     body("client").notEmpty().withMessage("El nombre no puede ir vacío"),
     body("phone").notEmpty().withMessage("El teléfono no puede ir vacío"),
     body("duration").isNumeric().notEmpty().withMessage("La duración es requerida"),
-    handlerInputErrors,  // ← UN SOLO handlerInputErrors al final de todas las validaciones
+    handlerInputErrors,
     createProduct
 )
 
