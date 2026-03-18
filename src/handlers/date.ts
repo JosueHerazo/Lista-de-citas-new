@@ -18,6 +18,19 @@ export const getDates = async (req: Request, res: Response) => {
 
 export const createDate = async (req: Request, res: Response) => {
     try {
+        const { barber, dateList } = req.body
+
+        // ✅ Verificar si ya existe una cita a esa hora con ese barbero
+        const existing = await Datelist.findOne({
+            where: { barber, dateList }
+        })
+
+        if (existing) {
+            return res.status(400).json({ 
+                error: "Ese horario ya está ocupado para este barbero" 
+            })
+        }
+
         const service = await Datelist.create(req.body)
         res.json({ data: service })
     } catch (error) {
