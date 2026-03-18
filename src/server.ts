@@ -39,14 +39,14 @@ server.use(cors(corsOptions))
 server.use(express.json())
 server.use(morgan("dev"))
 
-server.use("/api/service", router)
-server.use("/api/date",    routerDates)
+
 server.use('/api', (req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
     res.setHeader('Pragma', 'no-cache')
     res.setHeader('Expires', '0')
     next()
 })
-
+server.use("/api/service", router)
+server.use("/api/date",    routerDates)
 
 export default server
