@@ -6,4 +6,3 @@ export declare class Like extends Model {
     news: News;
 }
 export default Like;
-//# sourceMappingURL=Likes.model.d.ts.map

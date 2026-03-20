@@ -11,4 +11,3 @@ export declare class News extends Model {
     likes_list: Like[];
 }
 export default News;
-//# sourceMappingURL=New.model.d.ts.map

@@ -7,4 +7,3 @@ export declare class Comment extends Model {
     news: News;
 }
 export default Comment;
-//# sourceMappingURL=Comment.model.d.ts.map

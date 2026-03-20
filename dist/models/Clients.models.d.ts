@@ -9,4 +9,3 @@ declare class Client extends Model {
     services: Date[];
 }
 export default Client;
-//# sourceMappingURL=Clients.models.d.ts.map

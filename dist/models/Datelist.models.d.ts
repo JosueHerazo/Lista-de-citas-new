@@ -12,4 +12,3 @@ declare class Datelist extends Model {
     clientUsuario: Client;
 }
 export default Datelist;
-//# sourceMappingURL=Datelist.models.d.ts.map
