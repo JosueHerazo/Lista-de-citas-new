@@ -26,7 +26,6 @@ const server = (0, express_1.default)();
 const whitelist = [
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_DATE,
-    "http://localhost:5173"
 ];
 const corsOptions = {
     origin: function (origin, callback) {
