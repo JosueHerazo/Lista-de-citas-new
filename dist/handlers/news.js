@@ -7,17 +7,14 @@ exports.toggleLike = exports.addComment = exports.createNews = exports.getNews =
 const Comment_model_1 = __importDefault(require("../models/Comment.model"));
 const New_model_1 = __importDefault(require("../models/New.model"));
 const Likes_model_1 = __importDefault(require("../models/Likes.model"));
-const getNews = async (_req, res) => {
+const getNews = async (req, res) => {
     try {
-        const posts = await New_model_1.default.findAll({
-            order: [['createdAt', 'DESC']],
-            include: [Comment_model_1.default, Likes_model_1.default]
-        });
-        res.json({ success: true, data: posts });
+        // ... tu lógica de Sequelize
+        const news = await New_model_1.default.findAll();
+        res.json(news); // <--- Asegúrate de que esto se ejecute
     }
     catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: "Error al obtener noticias" });
+        res.status(500).json({ error: "Error al cargar" });
     }
 };
 exports.getNews = getNews;
