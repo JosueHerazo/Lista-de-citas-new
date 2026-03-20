@@ -4,6 +4,7 @@ import morgan from "morgan"
 import db from "./config/db"
 import router from "./router"
 import routerNews from "./routerNews"
+import routerTrabajos from "./routerTrabajos"
 
 async function connectDB() {
     try {
@@ -40,4 +41,6 @@ server.use(morgan("dev"))
 
 server.use("/api/news", routerNews)
 server.use("/api/date", router)
+server.use("/api/trabajos", routerTrabajos)
+
 export default server
