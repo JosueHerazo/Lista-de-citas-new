@@ -9,7 +9,6 @@ const morgan_1 = __importDefault(require("morgan"));
 const db_1 = __importDefault(require("./config/db"));
 const router_1 = __importDefault(require("./router"));
 const routerNews_1 = __importDefault(require("./routerNews"));
-const routerTrabajos_1 = __importDefault(require("./routerTrabajos"));
 async function connectDB() {
     try {
         await db_1.default.authenticate();
@@ -22,10 +21,10 @@ async function connectDB() {
 }
 connectDB();
 const server = (0, express_1.default)();
-// Configuración de CORS Robusta
 const whitelist = [
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_DATE,
+    "http://localhost:5173"
 ];
 const corsOptions = {
     origin: function (origin, callback) {
@@ -42,6 +41,5 @@ server.use(express_1.default.json());
 server.use((0, morgan_1.default)("dev"));
 server.use("/api/news", routerNews_1.default);
 server.use("/api/date", router_1.default);
-server.use("/api/trabajos", routerTrabajos_1.default);
 exports.default = server;
 //# sourceMappingURL=server.js.map
