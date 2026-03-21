@@ -11,13 +11,13 @@ import {
     getBarberos,
     saveBarberos
 } from "./handlers/date.Handler"
+import { getTrabajos, createTrabajo, deleteTrabajo } from "./handlers/trabajos.handler"
+import { uploadTrabajo } from "./config/cloudinaryTrabajos"
 import { handlerInputErrors } from "./middleware"
 
 const router = Router()
 
-// ── Barberos (ANTES de /:id) ──────────────────────────────────
 router.get("/barberos", getBarberos)
-
 router.post(
     "/barberos",
     body("barberos").isArray().withMessage("barberos debe ser un array"),
@@ -25,7 +25,6 @@ router.post(
     saveBarberos
 )
 
-// ── Availability (ANTES de /:id) ──────────────────────────────
 router.get(
     "/availability/:barber",
     param("barber").notEmpty().withMessage("Nombre de barbero requerido").trim(),
@@ -33,7 +32,15 @@ router.get(
     getBarberAvailability
 )
 
-// ── Crear cita ────────────────────────────────────────────────
+router.get("/trabajos", getTrabajos)
+router.post("/trabajos", uploadTrabajo.single("archivo"), createTrabajo)
+router.delete(
+    "/trabajos/:id",
+    param("id").isInt().withMessage("ID no válido"),
+    handlerInputErrors,
+    deleteTrabajo
+)
+
 router.post(
     "/",
     body("service").notEmpty().withMessage("El servicio no puede ir vacío"),
@@ -50,28 +57,24 @@ router.post(
     createProduct
 )
 
-// ── CRUD por ID (SIEMPRE al final) ────────────────────────────
 router.get(
     "/:id",
     param("id").isInt().withMessage("ID no válido"),
     handlerInputErrors,
     getProductById
 )
-
 router.put(
     "/:id",
     param("id").isInt().withMessage("ID no válido"),
     handlerInputErrors,
     UpdateProduct
 )
-
 router.patch(
     "/:id",
     param("id").isInt().withMessage("ID no válido"),
     handlerInputErrors,
     updateAvailability
 )
-
 router.delete(
     "/:id",
     param("id").isInt().withMessage("ID no válido"),
