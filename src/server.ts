@@ -23,7 +23,7 @@ const server = express()
 const whitelist = [
     process.env.FRONTEND_URL,   
     process.env.FRONTEND_URL_DATE,
-    "http://localhost:5173"
+    
 ];
 
 const corsOptions: CorsOptions = {
