@@ -8,3 +8,6 @@ export declare const deleteProduct: (req: Request, res: Response) => Promise<any
 export declare const getBarberAvailability: (req: Request, res: Response) => Promise<void>;
 export declare const getBarberos: (req: Request, res: Response) => Promise<any>;
 export declare const saveBarberos: (req: Request, res: Response) => Promise<any>;
+export declare const getTrabajos: (req: Request, res: Response) => Promise<void>;
+export declare const createTrabajo: (req: Request, res: Response) => Promise<any>;
+export declare const deleteTrabajo: (req: Request, res: Response) => Promise<any>;

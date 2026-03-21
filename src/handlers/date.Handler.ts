@@ -1,8 +1,16 @@
 import { Request, Response } from 'express'
 import Client from '../models/Clients.models'
 import Datelist from '../models/Datelist.models'
+import Trabajo from '../models/Trabajo.models'
 import { validationResult } from 'express-validator/lib'
 import { Op } from 'sequelize'
+import { v2 as cloudinary } from 'cloudinary'
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:    process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 export const getProducts = async (req: Request, res: Response) => {
     try {
@@ -25,12 +33,8 @@ export const createProduct = async (req: Request, res: Response) => {
             console.log("❌ Errores de validación:", errors.array())
             return res.status(400).json({ errors: errors.array() })
         }
-        console.log("✅ Body recibido correctamente:", req.body)
         const dateslist = await Datelist.create(req.body)
-        res.status(201).json({
-            message: "Cita creada correctamente",
-            data: dateslist
-        })
+        res.status(201).json({ message: "Cita creada correctamente", data: dateslist })
     } catch (error) {
         console.log("🔥 Error en el servidor:", error)
         res.status(500).json({ error: "Error interno" })
@@ -41,9 +45,7 @@ export const getProductById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const ListDate = await Datelist.findByPk(id)
-        if (!ListDate) {
-            return res.status(404).json({ error: "Producto No Encontrado" })
-        }
+        if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         res.json({ data: ListDate })
     } catch (error) {
         console.log(error)
@@ -54,9 +56,7 @@ export const UpdateProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const ListDate = await Datelist.findByPk(id)
-        if (!ListDate) {
-            return res.status(404).json({ error: "Producto No Encontrado" })
-        }
+        if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.update(req.body)
         await ListDate.save()
         res.json({ data: ListDate })
@@ -69,9 +69,7 @@ export const updateAvailability = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const ListDate = await Datelist.findByPk(id)
-        if (!ListDate) {
-            return res.status(404).json({ error: "Producto No Encontrado" })
-        }
+        if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.update({ isPaid: !ListDate.dataValues.isPaid })
         res.json({ data: ListDate })
     } catch (error) {
@@ -83,9 +81,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const ListDate = await Datelist.findByPk(id)
-        if (!ListDate) {
-            return res.status(404).json({ error: "Producto No Encontrado" })
-        }
+        if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.destroy()
         res.json({ data: "Product Eliminado" })
     } catch (error) {
@@ -96,34 +92,23 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         const { barber } = req.params
-        console.log("📩 Barbero recibido:", barber)
-
         const appointments = await Datelist.findAll({
-            where: {
-                barber: { [Op.iLike]: barber.trim() }
-            },
+            where: { barber: { [Op.iLike]: barber.trim() } },
             attributes: ['dateList', 'duration']
         })
-
         const busySlots = appointments.map(app => ({
             dateList: app.dataValues.dateList,
             duration: app.dataValues.duration || 30
         }))
-
-        console.log("🔴 Slots ocupados:", busySlots)
         res.json({ data: busySlots })
     } catch (error) {
-        console.error("Error getBarberAvailability:", error)
         res.status(500).json({ error: "Error en el servidor" })
     }
 }
 
-// ── Barberos guardados como JSON en tabla dates ───────────────
 export const getBarberos = async (req: Request, res: Response) => {
     try {
-        const config = await Datelist.findOne({
-            where: { service: '__barberos__' }
-        })
+        const config = await Datelist.findOne({ where: { service: '__barberos__' } })
         if (!config) {
             return res.json({ data: [
                 { id: "1", nombre: "Josue", foto: "" },
@@ -133,7 +118,6 @@ export const getBarberos = async (req: Request, res: Response) => {
         const barberos = JSON.parse(config.dataValues.client)
         res.json({ data: barberos })
     } catch (error) {
-        console.error("Error getBarberos:", error)
         res.status(500).json({ error: "Error al obtener barberos" })
     }
 }
@@ -141,31 +125,67 @@ export const getBarberos = async (req: Request, res: Response) => {
 export const saveBarberos = async (req: Request, res: Response) => {
     try {
         const { barberos } = req.body
-        if (!Array.isArray(barberos)) {
-            return res.status(400).json({ error: "barberos debe ser un array" })
-        }
+        if (!Array.isArray(barberos)) return res.status(400).json({ error: "barberos debe ser un array" })
         const json = JSON.stringify(barberos)
-
-        const existing = await Datelist.findOne({
-            where: { service: '__barberos__' }
-        })
-
+        const existing = await Datelist.findOne({ where: { service: '__barberos__' } })
         if (existing) {
             await existing.update({ client: json })
         } else {
             await Datelist.create({
-                service:  '__barberos__',
-                price:    0,
-                barber:   '__config__',
-                dateList: new Date().toISOString(),
-                client:   json,
-                phone:    '__config__',
-                duration: 0
+                service: '__barberos__', price: 0, barber: '__config__',
+                dateList: new Date().toISOString(), client: json,
+                phone: '__config__', duration: 0
             })
         }
         res.json({ data: barberos })
     } catch (error) {
-        console.error("Error saveBarberos:", error)
         res.status(500).json({ error: "Error al guardar barberos" })
+    }
+}
+
+// ── Trabajos ──────────────────────────────────────────────────
+export const getTrabajos = async (req: Request, res: Response) => {
+    try {
+        const trabajos = await Trabajo.findAll({ order: [['createdAt', 'DESC']] })
+        res.json({ data: trabajos })
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener trabajos' })
+    }
+}
+
+export const createTrabajo = async (req: Request, res: Response) => {
+    try {
+        const { titulo, descripcion, categoria, barbero } = req.body
+        const file = req.file as any
+        if (!file) return res.status(400).json({ error: 'No se recibió archivo' })
+        if (!titulo || !categoria) return res.status(400).json({ error: 'titulo y categoria son obligatorios' })
+        const trabajo = await Trabajo.create({
+            titulo,
+            descripcion: descripcion || '',
+            categoria,
+            tipo: file.mimetype?.startsWith('video') ? 'video' : 'image',
+            url: file.path,
+            publicId: file.filename,
+            barbero: barbero || ''
+        })
+        res.status(201).json({ data: trabajo })
+    } catch (error) {
+        res.status(500).json({ error: 'Error al crear trabajo' })
+    }
+}
+
+export const deleteTrabajo = async (req: Request, res: Response) => {
+    try {
+        const trabajo = await Trabajo.findByPk(req.params.id)
+        if (!trabajo) return res.status(404).json({ error: 'No encontrado' })
+        if (trabajo.publicId) {
+            await cloudinary.uploader.destroy(trabajo.publicId, {
+                resource_type: trabajo.tipo === 'video' ? 'video' : 'image'
+            })
+        }
+        await trabajo.destroy()
+        res.json({ data: 'Eliminado' })
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar' })
     }
 }
