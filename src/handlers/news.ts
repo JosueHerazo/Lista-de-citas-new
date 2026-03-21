@@ -4,16 +4,13 @@ import Comment from '../models/Comment.model';
 import News from '../models/New.model';
 import  Like  from '../models/Likes.model';
 
-export const getNews = async (_req: Request, res: Response) => {
+export const getNews = async (req, res) => {
     try {
-        const posts = await News.findAll({ 
-            order: [['createdAt', 'DESC']], 
-            include: [Comment, Like] 
-        });
-        res.json({ success: true, data: posts });
+        // ... tu lógica de Sequelize
+        const news = await News.findAll(); 
+        res.json(news); // <--- Asegúrate de que esto se ejecute
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: "Error al obtener noticias" });
+        res.status(500).json({ error: "Error al cargar" });
     }
 };
 
