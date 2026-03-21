@@ -8,7 +8,7 @@ import routerNews from "./routerNews"
 async function connectDB() {
     try {
         await db.authenticate()
-        await db.sync()
+        await db.sync({alter: true})
         console.log("Conexion exitosa a la DB")
     } catch (error) {
         console.log("Hubo un error al conectar a la DB")
