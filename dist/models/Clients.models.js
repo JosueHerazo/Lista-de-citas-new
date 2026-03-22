@@ -13,7 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+<<<<<<< HEAD
 const Datelist_models_1 = __importDefault(require("./Datelist.models"));
+=======
+const service_model_1 = __importDefault(require("./service.model"));
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
 let Client = class Client extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -25,11 +29,19 @@ __decorate([
 ], Client.prototype, "name", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
+<<<<<<< HEAD
         type: sequelize_typescript_1.DataType.STRING(), // Guardamos como string para evitar problemas de ceros iniciales
         allowNull: false,
         unique: true
     }),
     __metadata("design:type", String)
+=======
+        type: sequelize_typescript_1.DataType.INTEGER(), // Guardamos como string para evitar problemas de ceros iniciales
+        allowNull: false,
+        unique: true
+    }),
+    __metadata("design:type", Number)
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
 ], Client.prototype, "password", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -56,7 +68,11 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Client.prototype, "terms", void 0);
 __decorate([
+<<<<<<< HEAD
     (0, sequelize_typescript_1.HasMany)(() => Datelist_models_1.default),
+=======
+    (0, sequelize_typescript_1.HasMany)(() => service_model_1.default),
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
     __metadata("design:type", Array)
 ], Client.prototype, "services", void 0);
 Client = __decorate([

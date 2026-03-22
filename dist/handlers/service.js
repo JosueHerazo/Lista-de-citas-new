@@ -3,9 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.deleteProduct = exports.updateAvailability = exports.UpdateProduct = exports.getProductById = exports.createProduct = exports.getProducts = void 0;
 const service_model_1 = __importDefault(require("../models/service.model"));
 const Clients_models_1 = __importDefault(require("../models/Clients.models"));
+=======
+exports.getActiveServices = exports.archivarSemana = exports.markAsPaid = exports.deleteProduct = exports.updateAvailability = exports.UpdateProduct = exports.getProductById = exports.createProduct = exports.getProducts = void 0;
+const service_model_1 = __importDefault(require("../models/service.model"));
+const Clients_models_1 = __importDefault(require("../models/Clients.models"));
+const WeeklyClosing_1 = __importDefault(require("../models/models/WeeklyClosing"));
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
 const getProducts = async (req, res) => {
     try {
         const service = await service_model_1.default.findAll({
@@ -122,6 +129,64 @@ const deleteProduct = async (req, res) => {
     }
 };
 exports.deleteProduct = deleteProduct;
+<<<<<<< HEAD
+=======
+// En tu controlador de Express
+// 1. Marcar una cita como pagada (Liquidar cobro individual)
+const markAsPaid = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await service_model_1.default.findByPk(id);
+        if (!service) {
+            return res.status(404).json({ error: "Servicio no encontrado" });
+        }
+        // Marcamos como pagado
+        service.isPaid = true;
+        await service.save();
+        res.json({ data: service });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Error al procesar el pago" });
+    }
+};
+exports.markAsPaid = markAsPaid;
+// 2. Archivar la semana (Cierre total del barbero)
+const archivarSemana = async (req, res) => {
+    try {
+        const { barbero, totalBruto, comision50, serviciosArchivados } = req.body;
+        // Guardar el resumen histórico
+        await WeeklyClosing_1.default.create({
+            barber: barbero,
+            totalGross: totalBruto,
+            commission: comision50,
+            servicesCount: serviciosArchivados.length,
+            archivedServiceIds: serviciosArchivados.join(',')
+        });
+        // IMPORTANTE: En lugar de isArchived, usaremos un campo isSettled (Liquidado con barbero)
+        // o simplemente filtramos por fecha en el futuro. 
+        // Si prefieres usar isArchived, asegúrate de que esté en tu modelo de Sequelize.
+        await service_model_1.default.update({ isArchived: true }, {
+            where: { id: serviciosArchivados }
+        });
+        res.json({ msg: "Cierre completado con éxito" });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Error al archivar la semana" });
+    }
+};
+exports.archivarSemana = archivarSemana;
+// En tu controlador de servicios (ej. getServices)
+const getActiveServices = async (req, res) => {
+    const services = await service_model_1.default.findAll({
+        where: {
+            isPaid: false // <--- CLAVE: Solo traemos lo que NO se ha pagado aún
+        },
+        order: [['createdAt', 'DESC']]
+    });
+    res.json(services);
+};
+exports.getActiveServices = getActiveServices;
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
 // // // export const getProduct = async (req: Request, res:Response) =>{
 // // //     const products = Product.findAll(req.body)
 // // //     res.json(products)

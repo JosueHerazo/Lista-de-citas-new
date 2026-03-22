@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 echo node_modules/
 .env
 .DS_Store
+=======
+.env
+node_modules/
+dist
+>>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
