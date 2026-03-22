@@ -176,6 +176,8 @@ const createTrabajo = async (req, res) => {
     try {
         const { titulo, descripcion, categoria, barbero } = req.body;
         const file = req.file;
+        console.log("📁 File recibido:", file);
+        console.log("📝 Body recibido:", req.body);
         if (!file)
             return res.status(400).json({ error: 'No se recibió archivo' });
         if (!titulo || !categoria)
@@ -192,6 +194,7 @@ const createTrabajo = async (req, res) => {
         res.status(201).json({ data: trabajo });
     }
     catch (error) {
+        console.error('🔥 Error createTrabajo:', JSON.stringify(error));
         res.status(500).json({ error: 'Error al crear trabajo' });
     }
 };
