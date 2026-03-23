@@ -1,10 +1,19 @@
 import { Request, Response } from 'express'
 import Client from '../models/Clients.models'
-import Datelist from '../models/Datelist.models'
+import Datelist from '../models/DateList.models'
 import Trabajo from '../models/Trabajo.models'
 import { validationResult } from 'express-validator/lib'
 import { Op } from 'sequelize'
 import { v2 as cloudinary } from 'cloudinary'
+import multer from 'multer'
+
+declare global {
+    namespace Express {
+        interface Request {
+            file?: multer.File
+        }
+    }
+}
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

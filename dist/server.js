@@ -12,7 +12,7 @@ const routerNews_1 = __importDefault(require("./routerNews"));
 async function connectDB() {
     try {
         await db_1.default.authenticate();
-        await db_1.default.sync({ alter: true });
+        await db_1.default.sync();
         console.log("Conexion exitosa a la DB");
     }
     catch (error) {
