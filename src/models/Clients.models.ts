@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
-import Date from './DateList.models'
+import Date from './Datelist.models'
 
 @Table({ tableName: 'clients' })
 class Client extends Model {
