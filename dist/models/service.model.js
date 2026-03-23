@@ -45,13 +45,11 @@ __decorate([
 ], Service.prototype, "client", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.BIGINT() // Use BIGINT because phone numbers exceed standard INTEGER limits
+        type: sequelize_typescript_1.DataType.STRING() // Use BIGINT because phone numbers exceed standard INTEGER limits
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Service.prototype, "phone", void 0);
 __decorate([
-<<<<<<< HEAD
-=======
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.BOOLEAN,
         defaultValue: false // Por defecto, un servicio nuevo NO está pagado al barbero
@@ -59,7 +57,6 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Service.prototype, "isPaid", void 0);
 __decorate([
->>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
     (0, sequelize_typescript_1.ForeignKey)(() => Clients_models_1.default),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER(),

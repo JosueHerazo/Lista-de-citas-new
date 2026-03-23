@@ -51,9 +51,10 @@ __decorate([
 ], DateList.prototype, "client", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.BIGINT()
+        type: sequelize_typescript_1.DataType.STRING(),
+        allowNull: false
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], DateList.prototype, "phone", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -80,4 +81,4 @@ DateList = __decorate([
 ], DateList);
 // --- CORRECCIÓN AQUÍ ---
 exports.default = DateList;
-//# sourceMappingURL=DateList.models.js.map
+//# sourceMappingURL=Datelist.models.js.map

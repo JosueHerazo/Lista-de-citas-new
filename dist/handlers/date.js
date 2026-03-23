@@ -3,119 +3,172 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.UpdateProduct = exports.updateAvailability = exports.getProductById = exports.deleteProduct = exports.getBarberAvailability = exports.createProduct = exports.getProducts = void 0;
-const Datelist_models_1 = __importDefault(require("../models/Datelist.models"));
-const lib_1 = require("express-validator/lib");
-const getProducts = async (req, res) => {
-    try {
-        const dateslist = await Datelist_models_1.default.findAll();
-=======
-exports.UpdateProduct = exports.updateAppointmentStatus = exports.getProductById = exports.deleteProduct = exports.createProduct = exports.getProducts = void 0;
+exports.saveBarberos = exports.getBarberos = exports.getBarberAvailability = exports.deleteDate = exports.updateAppointmentStatus = exports.UpdateDate = exports.getDateById = exports.createDate = exports.getDates = void 0;
+const sequelize_1 = require("sequelize");
 const DateList_models_1 = __importDefault(require("../models/DateList.models"));
-const getProducts = async (req, res) => {
+const Clients_models_1 = __importDefault(require("../models/Clients.models"));
+const getDates = async (req, res) => {
     try {
-        const dateslist = await DateList_models_1.default.findAll({
-            order: [
-                ["createdAt", "DESC"]
-            ],
-            attributes: { exclude: ["updatedAt",] },
+        const service = await DateList_models_1.default.findAll({
+            where: {
+                service: { [sequelize_1.Op.notIn]: ['__barberos__'] } // ✅ excluir config
+            },
+            order: [["createdAt", "DESC"]],
+            attributes: { exclude: ["updatedAt"] },
+            include: [Clients_models_1.default]
         });
->>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
-        res.json({ data: dateslist });
+        res.json({ data: service });
     }
     catch (error) {
         console.log(error);
     }
 };
-exports.getProducts = getProducts;
-const createProduct = async (req, res) => {
+exports.getDates = getDates;
+const createDate = async (req, res) => {
     try {
-<<<<<<< HEAD
-        console.log("Body recibido en POST /api/date:", req.body);
-        // Esto te dirá EXACTAMENTE qué campo está fallando
-        const errors = (0, lib_1.validationResult)(req);
-        if (!errors.isEmpty()) {
-            console.log("❌ Errores de validación:", errors.array());
-            return res.status(400).json({ errors: errors.array() });
-        }
-        console.log("✅ Body recibido correctamente:", req.body);
-        const dateslist = await Datelist_models_1.default.create(req.body);
-        res.status(201).json({
-            message: "Cita creada correctamente",
-            data: dateslist
+        const { barber, dateList } = req.body;
+        const existing = await DateList_models_1.default.findOne({
+            where: { barber, dateList }
         });
+        if (existing) {
+            return res.status(400).json({
+                error: "Ese horario ya está ocupado para este barbero"
+            });
+        }
+        const service = await DateList_models_1.default.create(req.body);
+        res.json({ data: service });
     }
     catch (error) {
-        console.log("🔥 Error en el servidor:", error);
-        res.status(500).json({ error: "Error interno" });
+        console.log(error);
     }
 };
-exports.createProduct = createProduct;
+exports.createDate = createDate;
+const getDateById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await DateList_models_1.default.findByPk(id);
+        if (!service)
+            return res.status(404).json({ error: "Cita no encontrada" });
+        res.json({ data: service });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.getDateById = getDateById;
+const UpdateDate = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await DateList_models_1.default.findByPk(id);
+        if (!service)
+            return res.status(404).json({ error: "Cita no encontrada" });
+        await service.update(req.body);
+        await service.save();
+        res.json({ data: service });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.UpdateDate = UpdateDate;
+const updateAppointmentStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await DateList_models_1.default.findByPk(id);
+        if (!service)
+            return res.status(404).json({ error: "Cita no encontrada" });
+        await service.update({ isPaid: !service.dataValues.isPaid });
+        res.json({ data: service });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.updateAppointmentStatus = updateAppointmentStatus;
+const deleteDate = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await DateList_models_1.default.findByPk(id);
+        if (!service)
+            return res.status(404).json({ error: "Cita no encontrada" });
+        await service.destroy();
+        res.json({ data: "Cita eliminada" });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.deleteDate = deleteDate;
 const getBarberAvailability = async (req, res) => {
     try {
         const { barber } = req.params;
-        console.log("📩 Petición recibida para barbero:", req.params.barber);
-        const appointment = await Datelist_models_1.default.findAll({
-            where: { barber },
+        const appointments = await DateList_models_1.default.findAll({
+            where: { barber: { [sequelize_1.Op.iLike]: barber.trim() } },
             attributes: ['dateList']
         });
-        const busySlots = appointment.map(app => app.dateList);
-        // Respondemos con el array de fechas
+        const busySlots = appointments.map(app => ({
+            dateList: app.dataValues.dateList,
+            duration: 30
+        }));
         res.json({ data: busySlots });
     }
     catch (error) {
+        console.error("Error getBarberAvailability:", error);
         res.status(500).json({ error: "Error en el servidor" });
     }
 };
 exports.getBarberAvailability = getBarberAvailability;
-// Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
-const deleteProduct = async (req, res) => { };
-exports.deleteProduct = deleteProduct;
-const getProductById = async (req, res) => {
+// ── Barberos guardados como JSON en tabla dates ───────────────
+const getBarberos = async (req, res) => {
     try {
-        const { id } = req.params; // Usar id, no barber
-        const appointment = await Datelist_models_1.default.findByPk(id);
-        if (!appointment) {
-            return res.status(404).json({ error: "Cita no encontrada" });
+        const config = await DateList_models_1.default.findOne({
+            where: { service: '__barberos__' }
+        });
+        if (!config) {
+            return res.json({ data: [
+                    { id: "josue", nombre: "Josue", foto: "" },
+                    { id: "vato", nombre: "Vato", foto: "" }
+                ] });
         }
-        res.json({ data: appointment });
+        const barberos = JSON.parse(config.dataValues.client);
+        res.json({ data: barberos });
     }
     catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Error del servidor" });
+        console.error("Error getBarberos:", error);
+        res.status(500).json({ error: "Error al obtener barberos" });
     }
 };
-exports.getProductById = getProductById;
-const updateAvailability = async (req, res) => { };
-exports.updateAvailability = updateAvailability;
-=======
-        const dateslist = await DateList_models_1.default.create(req.body);
-        res.status(201).json({ data: dateslist });
+exports.getBarberos = getBarberos;
+const saveBarberos = async (req, res) => {
+    try {
+        const { barberos } = req.body;
+        if (!Array.isArray(barberos)) {
+            return res.status(400).json({ error: "barberos debe ser un array" });
+        }
+        const json = JSON.stringify(barberos);
+        const existing = await DateList_models_1.default.findOne({
+            where: { service: '__barberos__' }
+        });
+        if (existing) {
+            await existing.update({ client: json });
+        }
+        else {
+            await DateList_models_1.default.create({
+                service: '__barberos__',
+                price: 0,
+                barber: '__config__',
+                dateList: new Date().toISOString(),
+                client: json,
+                phone: '__config__',
+                duration: 0
+            });
+        }
+        res.json({ data: barberos });
     }
     catch (error) {
-        console.log(error);
+        console.error("Error saveBarberos:", error);
+        res.status(500).json({ error: "Error al guardar barberos" });
     }
 };
-exports.createProduct = createProduct;
-// Agrega los demás (deleteProduct, getProductById, etc.) aunque estén vacíos por ahora
-const deleteProduct = async (req, res) => { };
-exports.deleteProduct = deleteProduct;
-const getProductById = async (req, res) => { };
-exports.getProductById = getProductById;
-// En tu controlador de Express (Sugerencia)
-const updateAppointmentStatus = async (req, res) => {
-    const { id } = req.params;
-    const appointment = await DateList_models_1.default.findByPk(id);
-    if (appointment) {
-        // IMPORTANTE: Cambia el booleano que uses para filtrar
-        appointment.isPaid = true;
-        await appointment.save();
-        res.json({ data: appointment });
-    }
-};
-exports.updateAppointmentStatus = updateAppointmentStatus;
->>>>>>> c6d54f15bc335c99e7da8a36440131c346d8cd45
-const UpdateProduct = async (req, res) => { };
-exports.UpdateProduct = UpdateProduct;
+exports.saveBarberos = saveBarberos;
 //# sourceMappingURL=date.js.map
