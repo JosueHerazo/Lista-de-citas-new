@@ -5,7 +5,6 @@ import Trabajo from '../models/Trabajo.models'
 import { validationResult } from 'express-validator/lib'
 import { Op } from 'sequelize'
 import { v2 as cloudinary } from 'cloudinary'
-import multer from 'multer'
 
 
 
