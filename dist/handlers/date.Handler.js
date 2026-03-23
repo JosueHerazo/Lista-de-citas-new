@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTrabajo = exports.createTrabajo = exports.getTrabajos = exports.saveBarberos = exports.getBarberos = exports.getBarberAvailability = exports.deleteProduct = exports.updateAvailability = exports.UpdateProduct = exports.getProductById = exports.createProduct = exports.getProducts = void 0;
 const Clients_models_1 = __importDefault(require("../models/Clients.models"));
-const Datelist_models_1 = __importDefault(require("../models/Datelist.models"));
+const DateList_models_1 = __importDefault(require("../models/DateList.models"));
 const Trabajo_models_1 = __importDefault(require("../models/Trabajo.models"));
 const lib_1 = require("express-validator/lib");
 const sequelize_1 = require("sequelize");
@@ -17,7 +17,7 @@ cloudinary_1.v2.config({
 });
 const getProducts = async (req, res) => {
     try {
-        const ListDate = await Datelist_models_1.default.findAll({
+        const ListDate = await DateList_models_1.default.findAll({
             order: [["createdAt", "DESC"]],
             attributes: { exclude: ["updatedAt"] },
             include: [Clients_models_1.default]
@@ -37,7 +37,7 @@ const createProduct = async (req, res) => {
             console.log("❌ Errores de validación:", errors.array());
             return res.status(400).json({ errors: errors.array() });
         }
-        const dateslist = await Datelist_models_1.default.create(req.body);
+        const dateslist = await DateList_models_1.default.create(req.body);
         res.status(201).json({ message: "Cita creada correctamente", data: dateslist });
     }
     catch (error) {
@@ -49,7 +49,7 @@ exports.createProduct = createProduct;
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const ListDate = await Datelist_models_1.default.findByPk(id);
+        const ListDate = await DateList_models_1.default.findByPk(id);
         if (!ListDate)
             return res.status(404).json({ error: "Producto No Encontrado" });
         res.json({ data: ListDate });
@@ -62,7 +62,7 @@ exports.getProductById = getProductById;
 const UpdateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const ListDate = await Datelist_models_1.default.findByPk(id);
+        const ListDate = await DateList_models_1.default.findByPk(id);
         if (!ListDate)
             return res.status(404).json({ error: "Producto No Encontrado" });
         await ListDate.update(req.body);
@@ -77,7 +77,7 @@ exports.UpdateProduct = UpdateProduct;
 const updateAvailability = async (req, res) => {
     try {
         const { id } = req.params;
-        const ListDate = await Datelist_models_1.default.findByPk(id);
+        const ListDate = await DateList_models_1.default.findByPk(id);
         if (!ListDate)
             return res.status(404).json({ error: "Producto No Encontrado" });
         await ListDate.update({ isPaid: !ListDate.dataValues.isPaid });
@@ -91,7 +91,7 @@ exports.updateAvailability = updateAvailability;
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const ListDate = await Datelist_models_1.default.findByPk(id);
+        const ListDate = await DateList_models_1.default.findByPk(id);
         if (!ListDate)
             return res.status(404).json({ error: "Producto No Encontrado" });
         await ListDate.destroy();
@@ -105,7 +105,7 @@ exports.deleteProduct = deleteProduct;
 const getBarberAvailability = async (req, res) => {
     try {
         const { barber } = req.params;
-        const appointments = await Datelist_models_1.default.findAll({
+        const appointments = await DateList_models_1.default.findAll({
             where: { barber: { [sequelize_1.Op.iLike]: barber.trim() } },
             attributes: ['dateList', 'duration']
         });
@@ -122,7 +122,7 @@ const getBarberAvailability = async (req, res) => {
 exports.getBarberAvailability = getBarberAvailability;
 const getBarberos = async (req, res) => {
     try {
-        const config = await Datelist_models_1.default.findOne({ where: { service: '__barberos__' } });
+        const config = await DateList_models_1.default.findOne({ where: { service: '__barberos__' } });
         if (!config) {
             return res.json({ data: [
                     { id: "1", nombre: "Josue", foto: "" },
@@ -143,12 +143,12 @@ const saveBarberos = async (req, res) => {
         if (!Array.isArray(barberos))
             return res.status(400).json({ error: "barberos debe ser un array" });
         const json = JSON.stringify(barberos);
-        const existing = await Datelist_models_1.default.findOne({ where: { service: '__barberos__' } });
+        const existing = await DateList_models_1.default.findOne({ where: { service: '__barberos__' } });
         if (existing) {
             await existing.update({ client: json });
         }
         else {
-            await Datelist_models_1.default.create({
+            await DateList_models_1.default.create({
                 service: '__barberos__', price: 0, barber: '__config__',
                 dateList: new Date().toISOString(), client: json,
                 phone: '__config__', duration: 0
