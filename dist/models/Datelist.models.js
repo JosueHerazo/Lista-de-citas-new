@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const Clients_models_1 = __importDefault(require("./Clients.models"));
-let Datelist = class Datelist extends sequelize_typescript_1.Model {
+let DateList = class DateList extends sequelize_typescript_1.Model {
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -22,63 +22,63 @@ __decorate([
         allowNull: false
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "service", void 0);
+], DateList.prototype, "service", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER(), // O DECIMAL(10,2) para dinero
         allowNull: false
     }),
     __metadata("design:type", Number)
-], Datelist.prototype, "price", void 0);
+], DateList.prototype, "price", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(50),
         allowNull: false
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "barber", void 0);
+], DateList.prototype, "barber", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(),
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "dateList", void 0);
+], DateList.prototype, "dateList", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING()
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "client", void 0);
+], DateList.prototype, "client", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(),
         allowNull: false
     }),
     __metadata("design:type", String)
-], Datelist.prototype, "phone", void 0);
+], DateList.prototype, "phone", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.BOOLEAN,
         defaultValue: false // Por defecto las citas no están pagadas
     }),
     __metadata("design:type", Boolean)
-], Datelist.prototype, "isPaid", void 0);
+], DateList.prototype, "isPaid", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => Clients_models_1.default),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER
     }),
     __metadata("design:type", Number)
-], Datelist.prototype, "clientId", void 0);
+], DateList.prototype, "clientId", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => Clients_models_1.default),
     __metadata("design:type", Clients_models_1.default)
-], Datelist.prototype, "clientName", void 0);
-Datelist = __decorate([
+], DateList.prototype, "clientName", void 0);
+DateList = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: 'dates'
     })
-], Datelist);
+], DateList);
 // --- CORRECCIÓN AQUÍ ---
-exports.default = Datelist;
-//# sourceMappingURL=DateList.models.js.map
+exports.default = DateList;
+//# sourceMappingURL=Datelist.models.js.map

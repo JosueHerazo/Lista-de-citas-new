@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Client from '../models/Clients.models'
-import Datelist from '../models/DateList.models'
+import DateList from 'models/List.models'
 import Trabajo from '../models/Trabajo.models'
 import { validationResult } from 'express-validator/lib'
 import { Op } from 'sequelize'
@@ -16,7 +16,7 @@ cloudinary.config({
 
 export const getProducts = async (req: Request, res: Response) => {
     try {
-        const ListDate = await Datelist.findAll({
+        const ListDate = await DateList.findAll({
             order: [["createdAt", "DESC"]],
             attributes: { exclude: ["updatedAt"] },
             include: [Client]
@@ -35,7 +35,7 @@ export const createProduct = async (req: Request, res: Response) => {
             console.log("❌ Errores de validación:", errors.array())
             return res.status(400).json({ errors: errors.array() })
         }
-        const dateslist = await Datelist.create(req.body)
+        const dateslist = await DateList.create(req.body)
         res.status(201).json({ message: "Cita creada correctamente", data: dateslist })
     } catch (error) {
         console.log("🔥 Error en el servidor:", error)
@@ -46,7 +46,7 @@ export const createProduct = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const ListDate = await Datelist.findByPk(id)
+        const ListDate = await DateList.findByPk(id)
         if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         res.json({ data: ListDate })
     } catch (error) {
@@ -57,7 +57,7 @@ export const getProductById = async (req: Request, res: Response) => {
 export const UpdateProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const ListDate = await Datelist.findByPk(id)
+        const ListDate = await DateList.findByPk(id)
         if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.update(req.body)
         await ListDate.save()
@@ -70,7 +70,7 @@ export const UpdateProduct = async (req: Request, res: Response) => {
 export const updateAvailability = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const ListDate = await Datelist.findByPk(id)
+        const ListDate = await DateList.findByPk(id)
         if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.update({ isPaid: !ListDate.dataValues.isPaid })
         res.json({ data: ListDate })
@@ -82,7 +82,7 @@ export const updateAvailability = async (req: Request, res: Response) => {
 export const deleteProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const ListDate = await Datelist.findByPk(id)
+        const ListDate = await DateList.findByPk(id)
         if (!ListDate) return res.status(404).json({ error: "Producto No Encontrado" })
         await ListDate.destroy()
         res.json({ data: "Product Eliminado" })
@@ -94,7 +94,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         const { barber } = req.params
-        const appointments = await Datelist.findAll({
+        const appointments = await DateList.findAll({
             where: { barber: { [Op.iLike]: barber.trim() } },
             attributes: ['dateList', 'duration']
         })
@@ -110,7 +110,7 @@ export const getBarberAvailability = async (req: Request, res: Response) => {
 
 export const getBarberos = async (req: Request, res: Response) => {
     try {
-        const config = await Datelist.findOne({ where: { service: '__barberos__' } })
+        const config = await DateList.findOne({ where: { service: '__barberos__' } })
         if (!config) {
             return res.json({ data: [
                 { id: "1", nombre: "Josue", foto: "" },
@@ -129,11 +129,11 @@ export const saveBarberos = async (req: Request, res: Response) => {
         const { barberos } = req.body
         if (!Array.isArray(barberos)) return res.status(400).json({ error: "barberos debe ser un array" })
         const json = JSON.stringify(barberos)
-        const existing = await Datelist.findOne({ where: { service: '__barberos__' } })
+        const existing = await DateList.findOne({ where: { service: '__barberos__' } })
         if (existing) {
             await existing.update({ client: json })
         } else {
-            await Datelist.create({
+            await DateList.create({
                 service: '__barberos__', price: 0, barber: '__config__',
                 dateList: new Date().toISOString(), client: json,
                 phone: '__config__', duration: 0

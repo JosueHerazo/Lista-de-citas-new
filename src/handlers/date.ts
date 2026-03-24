@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
 import { Op } from "sequelize"
-import Datelist from "../models/DateList.models"
 import Client from "../models/Clients.models"
+import DateList from "models/List.models"
 
 export const getDates = async (req: Request, res: Response) => {
     try {
-        const service = await Datelist.findAll({
+        const service = await DateList.findAll({
             where: {
                 service: { [Op.notIn]: ['__barberos__'] }  // ✅ excluir config
             },
@@ -22,7 +22,7 @@ export const getDates = async (req: Request, res: Response) => {
 export const createDate = async (req: Request, res: Response) => {
     try {
         const { barber, dateList } = req.body
-        const existing = await Datelist.findOne({
+        const existing = await DateList.findOne({
             where: { barber, dateList }
         })
         if (existing) {
@@ -30,7 +30,7 @@ export const createDate = async (req: Request, res: Response) => {
                 error: "Ese horario ya está ocupado para este barbero"
             })
         }
-        const service = await Datelist.create(req.body)
+        const service = await DateList.create(req.body)
         res.json({ data: service })
     } catch (error) {
         console.log(error)
@@ -40,7 +40,7 @@ export const createDate = async (req: Request, res: Response) => {
 export const getDateById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const service = await Datelist.findByPk(id)
+        const service = await DateList.findByPk(id)
         if (!service) return res.status(404).json({ error: "Cita no encontrada" })
         res.json({ data: service })
     } catch (error) {
@@ -51,7 +51,7 @@ export const getDateById = async (req: Request, res: Response) => {
 export const UpdateDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const service = await Datelist.findByPk(id)
+        const service = await DateList.findByPk(id)
         if (!service) return res.status(404).json({ error: "Cita no encontrada" })
         await service.update(req.body)
         await service.save()
@@ -64,7 +64,7 @@ export const UpdateDate = async (req: Request, res: Response) => {
 export const updateAppointmentStatus = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const service = await Datelist.findByPk(id)
+        const service = await DateList.findByPk(id)
         if (!service) return res.status(404).json({ error: "Cita no encontrada" })
         await service.update({ isPaid: !service.dataValues.isPaid })
         res.json({ data: service })
@@ -76,7 +76,7 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
 export const deleteDate = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const service = await Datelist.findByPk(id)
+        const service = await DateList.findByPk(id)
         if (!service) return res.status(404).json({ error: "Cita no encontrada" })
         await service.destroy()
         res.json({ data: "Cita eliminada" })
@@ -88,7 +88,7 @@ export const deleteDate = async (req: Request, res: Response) => {
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         const { barber } = req.params
-        const appointments = await Datelist.findAll({
+        const appointments = await DateList.findAll({
             where: { barber: { [Op.iLike]: barber.trim() } },
             attributes: ['dateList']
         })
@@ -106,7 +106,7 @@ export const getBarberAvailability = async (req: Request, res: Response) => {
 // ── Barberos guardados como JSON en tabla dates ───────────────
 export const getBarberos = async (req: Request, res: Response) => {
     try {
-        const config = await Datelist.findOne({
+        const config = await DateList.findOne({
             where: { service: '__barberos__' }
         })
         if (!config) {
@@ -131,14 +131,14 @@ export const saveBarberos = async (req: Request, res: Response) => {
         }
         const json = JSON.stringify(barberos)
 
-        const existing = await Datelist.findOne({
+        const existing = await DateList.findOne({
             where: { service: '__barberos__' }
         })
 
         if (existing) {
             await existing.update({ client: json })
         } else {
-            await Datelist.create({
+            await DateList.create({
                 service:  '__barberos__',
                 price:    0,
                 barber:   '__config__',

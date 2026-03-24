@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
-import Datelist from './DateList.models'
+import DateList from './List.models'
 
 @Table({ tableName: 'clients' })
 class Client extends Model {
@@ -18,8 +18,8 @@ class Client extends Model {
     @Column({ type: DataType.BOOLEAN(), allowNull: false, unique: true })
     declare terms: boolean
 
-    @HasMany(() => Datelist)
-    declare services: Date[]
+    @HasMany(() => DateList)
+    declare services: DateList[]
 }
 
 export default Client

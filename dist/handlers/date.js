@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveBarberos = exports.getBarberos = exports.getBarberAvailability = exports.deleteDate = exports.updateAppointmentStatus = exports.UpdateDate = exports.getDateById = exports.createDate = exports.getDates = void 0;
 const sequelize_1 = require("sequelize");
-const DateList_models_1 = __importDefault(require("../models/DateList.models"));
 const Clients_models_1 = __importDefault(require("../models/Clients.models"));
+const List_models_1 = __importDefault(require("models/List.models"));
 const getDates = async (req, res) => {
     try {
-        const service = await DateList_models_1.default.findAll({
+        const service = await List_models_1.default.findAll({
             where: {
                 service: { [sequelize_1.Op.notIn]: ['__barberos__'] } // ✅ excluir config
             },
@@ -27,7 +27,7 @@ exports.getDates = getDates;
 const createDate = async (req, res) => {
     try {
         const { barber, dateList } = req.body;
-        const existing = await DateList_models_1.default.findOne({
+        const existing = await List_models_1.default.findOne({
             where: { barber, dateList }
         });
         if (existing) {
@@ -35,7 +35,7 @@ const createDate = async (req, res) => {
                 error: "Ese horario ya está ocupado para este barbero"
             });
         }
-        const service = await DateList_models_1.default.create(req.body);
+        const service = await List_models_1.default.create(req.body);
         res.json({ data: service });
     }
     catch (error) {
@@ -46,7 +46,7 @@ exports.createDate = createDate;
 const getDateById = async (req, res) => {
     try {
         const { id } = req.params;
-        const service = await DateList_models_1.default.findByPk(id);
+        const service = await List_models_1.default.findByPk(id);
         if (!service)
             return res.status(404).json({ error: "Cita no encontrada" });
         res.json({ data: service });
@@ -59,7 +59,7 @@ exports.getDateById = getDateById;
 const UpdateDate = async (req, res) => {
     try {
         const { id } = req.params;
-        const service = await DateList_models_1.default.findByPk(id);
+        const service = await List_models_1.default.findByPk(id);
         if (!service)
             return res.status(404).json({ error: "Cita no encontrada" });
         await service.update(req.body);
@@ -74,7 +74,7 @@ exports.UpdateDate = UpdateDate;
 const updateAppointmentStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const service = await DateList_models_1.default.findByPk(id);
+        const service = await List_models_1.default.findByPk(id);
         if (!service)
             return res.status(404).json({ error: "Cita no encontrada" });
         await service.update({ isPaid: !service.dataValues.isPaid });
@@ -88,7 +88,7 @@ exports.updateAppointmentStatus = updateAppointmentStatus;
 const deleteDate = async (req, res) => {
     try {
         const { id } = req.params;
-        const service = await DateList_models_1.default.findByPk(id);
+        const service = await List_models_1.default.findByPk(id);
         if (!service)
             return res.status(404).json({ error: "Cita no encontrada" });
         await service.destroy();
@@ -102,7 +102,7 @@ exports.deleteDate = deleteDate;
 const getBarberAvailability = async (req, res) => {
     try {
         const { barber } = req.params;
-        const appointments = await DateList_models_1.default.findAll({
+        const appointments = await List_models_1.default.findAll({
             where: { barber: { [sequelize_1.Op.iLike]: barber.trim() } },
             attributes: ['dateList']
         });
@@ -121,7 +121,7 @@ exports.getBarberAvailability = getBarberAvailability;
 // ── Barberos guardados como JSON en tabla dates ───────────────
 const getBarberos = async (req, res) => {
     try {
-        const config = await DateList_models_1.default.findOne({
+        const config = await List_models_1.default.findOne({
             where: { service: '__barberos__' }
         });
         if (!config) {
@@ -146,14 +146,14 @@ const saveBarberos = async (req, res) => {
             return res.status(400).json({ error: "barberos debe ser un array" });
         }
         const json = JSON.stringify(barberos);
-        const existing = await DateList_models_1.default.findOne({
+        const existing = await List_models_1.default.findOne({
             where: { service: '__barberos__' }
         });
         if (existing) {
             await existing.update({ client: json });
         }
         else {
-            await DateList_models_1.default.create({
+            await List_models_1.default.create({
                 service: '__barberos__',
                 price: 0,
                 barber: '__config__',
