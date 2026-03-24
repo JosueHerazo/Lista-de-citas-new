@@ -5,8 +5,8 @@ import {
     getProductById, getProducts, updateAvailability, UpdateProduct,
     getBarberos, saveBarberos, getTrabajos, createTrabajo, deleteTrabajo
 } from "./handlers/date.Handler"
-import { uploadTrabajo } from "./config/cloudinaryTrabajos"
 import { handlerInputErrors } from "./middleware"
+import { uploadWork } from "./config/cloudinary"
 
 const router = Router()
 
@@ -17,7 +17,7 @@ router.get("/availability/:barber",
     param("barber").notEmpty().trim(), handlerInputErrors, getBarberAvailability)
 
 router.get("/trabajos", getTrabajos)
-router.post("/trabajos", uploadTrabajo.single("archivo"), createTrabajo)
+router.post("/trabajos", uploadWork.single("archivo"), createTrabajo)
 router.delete("/trabajos/:id", param("id").isInt(), handlerInputErrors, deleteTrabajo)
 
 router.post("/",
