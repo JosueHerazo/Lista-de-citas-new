@@ -2,7 +2,7 @@ import { Router } from "express"
 import { body, param } from "express-validator"
 import {
     createProduct, deleteProduct, getBarberAvailability,
-    getProductById, getProducts, updateAvailability, UpdateProduct,
+    getProductById, updateAvailability, UpdateProduct,
     getBarberos, saveBarberos, getTrabajos, createTrabajo, deleteTrabajo
 } from "./handlers/date.Handler"
 import { handlerInputErrors } from "./middleware"
