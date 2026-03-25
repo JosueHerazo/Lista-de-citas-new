@@ -1,68 +1,60 @@
 import { Router } from "express"
 import { body, param } from "express-validator"
-import {
-    createDate, deleteDate, getDates, getDateById,
-    updateAppointmentStatus, UpdateDate,
-    getBarberAvailability,
-    getBarberos, saveBarberos
-} from "./handlers/date"
 import { handlerInputErrors } from "./middleware"
+import {
+    getDates, createDate, getDateById, UpdateDate,
+    updateAppointmentStatus, deleteDate,
+    getBarberos, saveBarberos,
+    getBarberAvailability,
+} from "./handlers/date"
+import { getWorks, createWorks, deleteWorks } from "./handlers/works.Handlers"
+import { uploadWork } from "./config/cloudinaryWorks"
 
 const router = Router()
 
-router.get("/", getDates)
-
-// ── Barberos (SIN validadores, ANTES de /:id) ─────────────────
+// ── Barberos ──────────────────────────────────────────────────
 router.get("/barberos", getBarberos)
-router.post("/barberos", saveBarberos)
+router.post("/barberos",
+    body("barberos").isArray().withMessage("Debe ser un array"),
+    handlerInputErrors,
+    saveBarberos
+)
 
-// ── Availability (ANTES de /:id) ──────────────────────────────
-router.get(
-    "/availability/:barber",
+// ── Availability ──────────────────────────────────────────────
+router.get("/availability/:barber",
     param("barber").notEmpty().withMessage("Barbero requerido").trim(),
     handlerInputErrors,
     getBarberAvailability
 )
 
-// ── Crear cita ────────────────────────────────────────────────
+// ── Trabajos ──────────────────────────────────────────────────
+router.get("/works", getWorks)
+router.post("/works", uploadWork.single("archivo"), createWorks)
+router.delete("/works/:id",
+    param("id").isInt().withMessage("ID no válido"),
+    handlerInputErrors,
+    deleteWorks
+)
+
+// ── CRUD citas ────────────────────────────────────────────────
+router.get("/", getDates)
+
 router.post("/",
-    body("service").notEmpty().withMessage("El nombre del servicio no puede ir vacio"),
-    body("price")
-        .notEmpty().withMessage("El valor del producto no puede ir vacio")
-        .isNumeric().withMessage("El precio debe ser un número")
-        .custom(value => parseFloat(value) >= 0).withMessage("Precio no valido"),
-    body("barber").isString().notEmpty().withMessage("El nombre del barbero no puede ir vacio").trim(),
-    body("dateList").notEmpty().withMessage("La fecha no puede ir vacio"),
-    body("client").notEmpty().withMessage("el nombre no puede ir vacio"),
-    body("phone").notEmpty().withMessage("El telefono no puede ir vacio"),
-    body("duration").isNumeric().notEmpty().withMessage("tiempo de service"),
+    body("service").notEmpty().withMessage("El servicio es requerido"),
+    body("price").notEmpty().isNumeric().custom(v => parseFloat(v) >= 0),
+    body("barber").isString().notEmpty().trim(),
+    body("dateList").notEmpty(),
+    body("client").notEmpty(),
+    body("phone").notEmpty(),
+    body("duration").isNumeric().notEmpty(),
     handlerInputErrors,
     createDate
 )
 
-// ── CRUD por ID (SIEMPRE al final) ────────────────────────────
-router.get("/:id",
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    getDateById
-)
-
-router.put("/:id",
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    UpdateDate
-)
-
-router.patch("/:id",
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    updateAppointmentStatus
-)
-
-router.delete("/:id",
-    param("id").isInt().withMessage("ID no valido"),
-    handlerInputErrors,
-    deleteDate
-)
+// ── :id SIEMPRE AL FINAL ──────────────────────────────────────
+router.get("/:id",    param("id").isInt().withMessage("ID no válido"), handlerInputErrors, getDateById)
+router.put("/:id",    param("id").isInt().withMessage("ID no válido"), handlerInputErrors, UpdateDate)
+router.patch("/:id",  param("id").isInt().withMessage("ID no válido"), handlerInputErrors, updateAppointmentStatus)
+router.delete("/:id", param("id").isInt().withMessage("ID no válido"), handlerInputErrors, deleteDate)
 
 export default router
