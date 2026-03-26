@@ -7,7 +7,7 @@ import {
     getTrabajos, createTrabajo, deleteTrabajo
 } from "./handlers/date.Handler"
 import { handlerInputErrors } from "./middleware"
-import { uploadWork } from "./config/cloudinary"
+
 
 const router = Router()
 
@@ -44,7 +44,7 @@ router.get("/availability/:barber",
 
 // ── Trabajos ──────────────────────────────────────────────────
 router.get("/trabajos", getTrabajos)
-router.post("/trabajos", uploadWork.single("archivo"), createTrabajo)
+router.post("/trabajos", createTrabajo)
 router.delete("/trabajos/:id",
     param("id").isInt().withMessage("ID no válido"),
     handlerInputErrors,
