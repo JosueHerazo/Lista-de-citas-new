@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
-import List from "../models/List.models"
+import List from "./DateList.models"
 @Table({ tableName: 'clients' })
 class Client extends Model {
     @Column({ type: DataType.STRING(100), allowNull: false })
