@@ -111,6 +111,37 @@ export const getBarberos = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Error al obtener barberos" });
     }
 };
+
+export const addBarberoSentinel = async (req: Request, res: Response) => {
+    try {
+        const { nombre, foto } = req.body
+        const config = await DateList.findOne({ where: { service: '__barberos__' } })
+        
+        let barberos = []
+        if (config) {
+            barberos = JSON.parse(config.dataValues.client || "[]")
+        }
+        
+        const id = Date.now().toString()
+        barberos.push({ id, nombre: nombre.trim(), foto: foto || "" })
+        const json = JSON.stringify(barberos)
+        
+        if (config) {
+            await config.update({ client: json })
+        } else {
+            await DateList.create({
+                service: '__barberos__', price: 0, barber: '__config__',
+                dateList: new Date().toISOString(), client: json,
+                phone: '__config__', duration: 0
+            })
+        }
+        
+        res.status(201).json({ data: { id, nombre: nombre.trim(), foto: foto || "" } })
+    } catch (error) {
+        res.status(500).json({ error: "Error al agregar barbero" })
+    }
+}
+
 export const getBarberAvailability = async (req: Request, res: Response) => {
     try {
         const { barber } = req.params
