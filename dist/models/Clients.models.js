@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
-const List_models_1 = __importDefault(require("../models/List.models"));
+const DateList_models_1 = __importDefault(require("./DateList.models"));
 let Client = class Client extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -37,7 +37,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Client.prototype, "terms", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => List_models_1.default),
+    (0, sequelize_typescript_1.HasMany)(() => DateList_models_1.default),
     __metadata("design:type", Array)
 ], Client.prototype, "services", void 0);
 Client = __decorate([

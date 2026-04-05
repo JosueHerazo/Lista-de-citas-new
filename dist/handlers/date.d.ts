@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 export declare const getDates: (req: Request, res: Response) => Promise<void>;
-export declare const createDate: (req: Request, res: Response) => Promise<any>;
+export declare const createDate: (req: Request, res: Response) => Promise<void>;
 export declare const getDateById: (req: Request, res: Response) => Promise<any>;
 export declare const UpdateDate: (req: Request, res: Response) => Promise<any>;
 export declare const updateAppointmentStatus: (req: Request, res: Response) => Promise<any>;
 export declare const deleteDate: (req: Request, res: Response) => Promise<any>;
-export declare const getBarberAvailability: (req: Request, res: Response) => Promise<void>;
 export declare const getBarberos: (req: Request, res: Response) => Promise<any>;
+export declare const addBarberoSentinel: (req: Request, res: Response) => Promise<void>;
+export declare const getBarberAvailability: (req: Request, res: Response) => Promise<void>;
 export declare const saveBarberos: (req: Request, res: Response) => Promise<any>;
+export declare const createWorks: (req: Request, res: Response) => Promise<any>;
+export declare const getWorks: (req: Request, res: Response) => Promise<void>;
+export declare const deleteWorks: (req: Request, res: Response) => Promise<any>;

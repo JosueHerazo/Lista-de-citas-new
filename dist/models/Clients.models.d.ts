@@ -1,5 +1,5 @@
 import { Model } from 'sequelize-typescript';
-import List from "../models/List.models";
+import List from "./DateList.models";
 declare class Client extends Model {
     name: string;
     password: string;

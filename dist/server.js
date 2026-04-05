@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const db_1 = __importDefault(require("./config/db"));
-const router_1 = __importDefault(require("./router"));
+const routerDates_1 = __importDefault(require("./routerDates"));
 const routerNews_1 = __importDefault(require("./routerNews"));
 async function connectDB() {
     try {
@@ -24,7 +24,6 @@ const server = (0, express_1.default)();
 const whitelist = [
     process.env.FRONTEND_URL,
     process.env.FRONTEND_URL_DATE,
-    "http://localhost:5173"
 ];
 const corsOptions = {
     origin: function (origin, callback) {
@@ -34,12 +33,13 @@ const corsOptions = {
         else {
             callback(new Error("Error de CORS: Origen no permitido"));
         }
-    }
+    },
+    credentials: true, // si usas cookies o localStorage con auth
 };
 server.use((0, cors_1.default)(corsOptions));
 server.use(express_1.default.json());
 server.use((0, morgan_1.default)("dev"));
 server.use("/api/news", routerNews_1.default);
-server.use("/api/date", router_1.default);
+server.use("/api/date", routerDates_1.default);
 exports.default = server;
 //# sourceMappingURL=server.js.map
