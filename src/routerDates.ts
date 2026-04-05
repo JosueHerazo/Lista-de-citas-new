@@ -13,16 +13,21 @@ import {
     saveBarberos,
     getWorks,
     createWorks,
-    deleteWorks
+    deleteWorks,
+    addBarberoSentinel
 } from "./handlers/date";
-import { uploadWork } from "./config/cloudinaryWorks";
+// import { uploadWork } from "./config/cloudinaryWorks";
 
 const router = Router();
 
 // Barberos
 router.get("/barberos", getBarberos);
 router.post("/barberos", saveBarberos);   // ← Usa saveBarberos que ya tienes
-
+router.post("/barberos/add", 
+    body("nombre").notEmpty().trim(),
+    handlerInputErrors,
+    addBarberoSentinel
+)
 // Availability
 router.get("/availability/:barber", 
     param("barber").notEmpty().trim(),
@@ -32,7 +37,7 @@ router.get("/availability/:barber",
 
 // Trabajos (Cloudinary)
 router.get("/trabajos", getWorks);
-router.post("/trabajos", uploadWork.single("archivo"), createWorks); // ✅ BIEN
+router.post("/trabajos", createWorks); // ✅ BIEN
 
 router.delete("/trabajos/:id", 
     param("id").isInt().withMessage("ID no válido"),

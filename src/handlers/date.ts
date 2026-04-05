@@ -198,46 +198,31 @@ export const saveBarberos = async (req: Request, res: Response) => {
     }
 };
 
-// ====================== TRABAJOS (Cloudinary) ======================
+// ====================== TRABAJOS (Cloudinary) =
+
 export const createWorks = async (req: Request, res: Response) => {
     try {
-        const file = req.file as Express.Multer.File;
-        if (!file) {
-            return res.status(400).json({ error: "No se recibió ningún archivo" });
-        }
-
-        console.log("Subiendo a Cloudinary...");
-
-        const result = await new Promise<any>((resolve, reject) => {
-            cloudinary.uploader.upload_stream(
-                { resource_type: "auto", folder: "trabajos" },
-                (error, result) => {
-                    if (error) reject(error);
-                    else resolve(result);
-                }
-            ).end(file.buffer);
-        });
+        const { titulo, descripcion, categoria, barbero, imagen } = req.body
+        
+        if (!imagen) return res.status(400).json({ error: "No se recibió imagen" })
+        if (!titulo)  return res.status(400).json({ error: "Título obligatorio" })
 
         const trabajo = await Trabajo.create({
-            titulo: req.body.titulo || "Sin título",
-            descripcion: req.body.descripcion || "",
-            categoria: req.body.categoria || "general",
-            tipo: result.resource_type,
-            url: result.secure_url,
-            publicId: result.public_id,
-            barbero: req.body.barbero || "Sin asignar"
-        });
+            titulo,
+            descripcion: descripcion || "",
+            categoria:   categoria   || "Cortes",
+            tipo:        "image",
+            url:         imagen,   // base64 directo
+            publicId:    null,
+            barbero:     barbero   || ""
+        })
 
-        res.json({ success: true, data: trabajo, message: "Trabajo subido correctamente" });
-
-    } catch (error: any) {
-        console.error("Error en createWorks:", error);
-        res.status(500).json({ 
-            error: "Error al subir el trabajo", 
-            details: error.message 
-        });
+        res.json({ data: trabajo })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Error al crear trabajo" })
     }
-};
+}
 
 export const getWorks = async (req: Request, res: Response) => {
     try {
