@@ -5,7 +5,6 @@ const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const middleware_1 = require("./middleware");
 const date_1 = require("./handlers/date");
-// import { uploadWork } from "./config/cloudinaryWorks";
 const router = (0, express_1.Router)();
 // Barberos
 router.get("/barberos", date_1.getBarberos);
