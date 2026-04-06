@@ -16,7 +16,6 @@ import {
     deleteWorks,
     addBarberoSentinel
 } from "./handlers/date";
-// import { uploadWork } from "./config/cloudinaryWorks";
 
 const router = Router();
 
