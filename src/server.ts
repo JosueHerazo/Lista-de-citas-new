@@ -35,8 +35,8 @@ const corsOptions: CorsOptions = {
     credentials: true,   // si usas cookies o localStorage con auth
 }
 server.use(cors(corsOptions))
-server.use(express.json({ limit: '10mb' }))
-server.use(express.urlencoded({ extended: true, limit: '10mb' }))
+server.use(express.json({ limit: '50mb' }))
+server.use(express.urlencoded({ extended: true, limit: '50mb' }))
 server.use(morgan("dev"))
 
 server.use("/api/news", routerNews)
