@@ -1,0 +1,70 @@
+import {number, string, email,  pipe, boolean, object, InferOutput, any, nullable, array,} from "valibot"
+
+export const DraftRegisterSchema = object({
+    name: string(),
+    phone: string(),
+    terms: boolean()
+    // menssage:string
+})
+
+export const RegisterSchema = object({
+    
+    id: number(),
+    name:   string(),
+    password:  string(), 
+    email: pipe(string(), email()),
+    phone: string(),
+    terms: boolean()
+    // menssage:string
+}) 
+
+export const DraftDateSchema = object({
+    service: string(),
+    price: number(),
+    barber: string(),
+    client: string(),
+    phone: string(),  // Cambia date() por any() para evitar el error de parseo
+    dateList: string(),
+    duration: number()// <-- AÑADE ESTO para que Valibot no rechace el formulario
+         })
+
+ export const WeeklyClosingSchema = object({
+    id: number(),
+    barber: string(),
+    totalGross: any(), 
+    commission: any(),
+    servicesCount: number(),
+    archivedServiceIds: string(),
+    createdAt: any()
+})
+// Noticias Schema
+export const NewsSchema = object({
+  description: string(),
+  type: string(), // 'image' o 'video'
+  url: string(),
+  barberId: string() // Para saber quién lo subió
+});
+export const DateSchema = object({
+    id: number(),
+    service: string(),
+    price: number(),
+    barber: string(),
+    client: string(),   
+    phone: nullable(string()),   
+    createdAt: any(), // IMPORTANTE: Sequelize siempre lo envía
+    updatedAt: any(), // IMPORTANTE: Sequelize siempre lo envía
+    clientId: nullable(any()),     
+    dateList: string(),
+    isPaid: boolean(),
+    // isArchived: boolean(),  // <--- Añadir esto
+
+})
+export const DatesSchema = array(DateSchema)
+
+export type Register = InferOutput<typeof RegisterSchema>
+export type DraftDate = InferOutput<typeof DraftDateSchema>     
+export type DraftNews = InferOutput<typeof NewsSchema>  
+export type WeeklyClosing = InferOutput<typeof WeeklyClosingSchema> 
+export type DraftRegister = InferOutput<typeof DraftRegisterSchema>
+export type DateList = InferOutput<typeof DateSchema>
+
