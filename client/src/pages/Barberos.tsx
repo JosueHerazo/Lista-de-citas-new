@@ -28,14 +28,6 @@ const BARBEROS: Barber[] = [
     instagram: "https://instagram.com/latinosvip1"
   },
   {
-    id: "jankel",
-    nombre: "Jankel",
-    foto: latinovip,
-    descripcion: "Maestro en barba clásica y estilo VIP",
-    especialidad: "Barba & Estilo",
-    instagram: "https://instagram.com/latinosvip1"
-  },
-  {
     id: "stiven",
     nombre: "Stiven",
     foto: latinovip,
